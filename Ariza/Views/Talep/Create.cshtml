@@ -1,0 +1,21 @@
+﻿@model Ariza.Models.BasvuruViewModel
+
+<h2>Başvuru Oluştur</h2>
+
+<form asp-action="Create" method="post">
+    <div>
+        <label for="Ariza">Arıza nedir</label>
+        <input type="text" asp-for="Ariza" />
+        <span asp-validation-for="Ariza"></span>
+    </div>
+    <div>
+        <label for="Bolum">Bölüm</label>
+        <input type="text" asp-for="Bolum" />
+        <span asp-validation-for="Bolum"></span>
+    </div>
+    <div class="agile-profile">
+        <p>Birim</p>
+        <input type="text" name="Birim" placeholder="Birim" required="">
+    </div>
+    <button type="submit">Gönder</button>
+</form>

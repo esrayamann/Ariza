@@ -1,0 +1,25 @@
+﻿using Ariza.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace Ariza
+{
+    public class Context:DbContext 
+    {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            //optionsBuilder.UseSqlServer("server=LAPTOP-IEH31APK;database=Ariza;user id=sa;password=1234;TrustServerCertificate=True;");
+        }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Talep> Taleps { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Talep>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.Taleps)
+                .HasForeignKey(a => a.UserId);
+            base.OnModelCreating(modelBuilder);
+        }
+    }
+}

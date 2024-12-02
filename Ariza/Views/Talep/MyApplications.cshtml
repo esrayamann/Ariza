@@ -1,0 +1,25 @@
+﻿@model List<Ariza.Models.Talep>
+
+<h2>Başvurularım</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Başvuru Nedeni</th>
+            <th>Bölüm</th>
+            <th>Oluşturulma Tarihi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var talep in Model)
+        {
+            <tr>
+                <td>@talep.Id</td>
+                <td>@talep.Ariza</td>
+                <td>@talep.Bolum</td>
+                <td>@talep.CreatedDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
