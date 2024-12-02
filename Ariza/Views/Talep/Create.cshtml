@@ -1,21 +1,101 @@
-﻿@model Ariza.Models.BasvuruViewModel
+﻿@model Ariza.Models.TalepViewModel
 
-<h2>Başvuru Oluştur</h2>
+@{
+    ViewData["Title"] = "Talep Oluştur";
+    Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+}
 
-<form asp-action="Create" method="post">
-    <div>
-        <label for="Ariza">Arıza nedir</label>
-        <input type="text" asp-for="Ariza" />
-        <span asp-validation-for="Ariza"></span>
-    </div>
-    <div>
-        <label for="Bolum">Bölüm</label>
-        <input type="text" asp-for="Bolum" />
-        <span asp-validation-for="Bolum"></span>
-    </div>
-    <div class="agile-profile">
-        <p>Birim</p>
-        <input type="text" name="Birim" placeholder="Birim" required="">
-    </div>
-    <button type="submit">Gönder</button>
-</form>
+<h2>Talep Oluştur</h2>
+
+<html>
+<head>
+    <style>
+        table, td, th {
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 60%; /* Orta genişlikte olacak şekilde */
+            margin: 20px auto; /* Ortalamak için */
+        }
+
+        th, td {
+            padding: 15px;
+        }
+
+        th {
+            background-color: white;
+        }
+
+        button {
+            background-color: #549386;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #549386;
+            }
+    </style>
+</head>
+<body>
+    <form asp-action="Create" method="post">
+        <table>
+            <tr>
+                <th>Alan</th>
+                <th>Bilgi</th>
+            </tr>
+            <tr>
+                <td><label for="Ariza">Arıza Açıklaması</label></td>
+                <td>
+                    <input type="text" asp-for="Ariza" style="width: 100%;" />
+                    <span asp-validation-for="Ariza" style="color: red;"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="Bolum">Bölüm</label></td>
+                <td>
+                    <input type="text" asp-for="Bolum" style="width: 100%;" />
+                    <span asp-validation-for="Bolum" style="color: red;"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="Birim">Birim</label></td>
+                <td>
+                    <input type="text" asp-for="Birim" style="width: 100%;" />
+                    <span asp-validation-for="Birim" style="color: red;"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="TelNo">Telefon Numarası</label></td>
+                <td>
+                    <input type="number" asp-for="TelNo" style="width: 100%;" />
+                    <span asp-validation-for="TelNo" style="color: red;"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="Email">Email</label></td>
+                <td>
+                    <input type="email" asp-for="Email" style="width: 100%;" />
+                    <span asp-validation-for="Email" style="color: red;"></span>
+                </td>
+            </tr>
+            @* <tr>
+                <td><label for="SicilNo">Sicil Numarası</label></td>
+                <td>
+                    <input type="number" asp-for="SicilNo" style="width: 100%;" />
+                    <span asp-validation-for="SicilNo" style="color: red;"></span>
+                </td>
+            </tr>  *@ 
+        </table>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit">Talep Gönder</button>
+        </div>
+    </form>
+</body>
+</html>

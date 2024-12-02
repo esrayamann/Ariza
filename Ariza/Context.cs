@@ -5,9 +5,12 @@ namespace Ariza
 {
     public class Context:DbContext 
     {
+        public Context(DbContextOptions<Context> options) : base(options)
+        {
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("server=LAPTOP-IEH31APK;database=Ariza;user id=sa;password=1234;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("server=LAPTOP-IEH31APK;database=Ariza;user id=sa;password=1234;TrustServerCertificate=True;");
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -20,6 +23,14 @@ namespace Ariza
                 .WithMany(u => u.Taleps)
                 .HasForeignKey(a => a.UserId);
             base.OnModelCreating(modelBuilder);
+        }
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            return await Users.ToListAsync();  
+        }
+        public async Task<List<Talep>> GetAllApplicationsAsync()
+        {
+            return await Taleps.ToListAsync();
         }
     }
 }

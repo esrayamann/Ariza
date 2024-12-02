@@ -25,7 +25,7 @@ namespace Ariza.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(BasvuruViewModel model)
+        public async Task<IActionResult> Create(TalepViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -43,7 +43,10 @@ namespace Ariza.Controllers
                     {
                         UserId = userId,
                         Ariza = model.Ariza,
-                        Bolum = model.Bolum
+                        Bolum = model.Bolum,
+                        Birim = model.Birim,
+                        TelNo = model.TelNo
+                        //Email = model.Email
                     };
 
                     // Context ile başvuru ekleme

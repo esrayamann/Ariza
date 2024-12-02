@@ -49,7 +49,7 @@ namespace Ariza.Controllers
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
 
-                await HttpContext.SignInAsync("CookieAuthentication", claimsPrincipal);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
                 if (user.UserRoles.Any(ur => ur.RoleId == 1))
                 {

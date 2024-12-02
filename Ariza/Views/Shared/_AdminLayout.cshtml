@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<title>Teknik Servis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body>
+
+    <!-- Sidebar -->
+    <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
+        <h3 class="w3-bar-item">Menüler</h3>
+        @*   <a href="/Register/Index/" class="w3-bar-item w3-button">Öğrenci Kimlik Başvuru</a> *@
+        <a href="/Admin/ApplicationList/" class="w3-bar-item w3-button">Arıza Talebinde Bulunanlar</a>
+        <a href="/Admin/UserList/" class="w3-bar-item w3-button">Kullanıcı Listesi</a>
+@*         <a href="/Role/Index/" class="w3-bar-item w3-button">Rolleri Yönet</a>
+ *@        @*   <a href="/Login/GirisYap/" class="w3-bar-item w3-button">Çıkış</a>
+ *@
+
+        <form asp-action="Logout" asp-controller="Login" method="post" class="form-inline">
+            <button type="submit" class="btn btn-link">Oturumu Kapat</button>
+        </form>
+    </div>
+
+    <!-- Page Content -->
+    <div style="margin-left:25%">
+
+        <div class="w3-container w3-teal">
+            <h1>Hoşgeldiniz</h1>
+        </div>
+
+
+        <div class="w3-container">
+            @RenderBody()
+        </div>
+
+    </div>
+
+</body>
+</html>

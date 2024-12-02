@@ -1,25 +1,79 @@
 ﻿@model List<Ariza.Models.Talep>
 
+@{
+    ViewData["Title"] = "Başvurularım";
+    Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+}
+
 <h2>Başvurularım</h2>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Başvuru Nedeni</th>
-            <th>Bölüm</th>
-            <th>Oluşturulma Tarihi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var talep in Model)
-        {
-            <tr>
-                <td>@talep.Id</td>
-                <td>@talep.Ariza</td>
-                <td>@talep.Bolum</td>
-                <td>@talep.CreatedDate</td>
-            </tr>
+<html>
+<head>
+    <style>
+        table, td, th {
+            border: 1px solid #ddd;
+            text-align: left;
         }
-    </tbody>
-</table>
+
+        table {
+            border-collapse: collapse;
+            width: 80%; /* Orta genişlikte olacak şekilde */
+            margin: 20px auto; /* Ortalamak için */
+        }
+
+        th, td {
+            padding: 15px;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #e0f7fa;
+        }
+
+        .container {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Başvuru Nedeni</th>
+                    <th>Bölüm</th>
+                    <th>Birim</th>
+                    <th>Telefon</th>
+                    <th>Email</th>
+                    <th>Oluşturulma Tarihi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var talep in Model)
+                {
+                    <tr>
+                        <td>@talep.Id</td>
+                        <td>@talep.Ariza</td>
+                        <td>@talep.Bolum</td>
+                        <td>@talep.Birim</td>
+                        <td>@talep.TelNo</td>
+                        <td>@talep.Email</td>
+                        <td>@talep.CreatedDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
