@@ -21,48 +21,92 @@ namespace Ariza.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+      
+           var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+           if (userIdClaim == null)
+               return RedirectToAction("Index", "Login");
+
+           if (int.TryParse(userIdClaim.Value, out int userId))
+           {
+               var user = _context.Users.SingleOrDefault(u => u.Id == userId);
+               if (user != null)
+               {
+                   // Kullanıcı bilgilerini View'e gönder
+                   var model = new Talep
+                   {
+                       Ad = user.Ad,
+                       Soyad = user.Soyad,
+                       Email = user.Email,
+                   };
+
+                   return View(model);
+               }
+           }
+
+           return RedirectToAction("Index", "Login");
         }
-
         [HttpPost]
-        public async Task<IActionResult> Create(TalepViewModel model)
+        public async Task<IActionResult> Create(Talep model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-                if (userIdClaim == null)
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
                 {
-                    ModelState.AddModelError("", "Giriş yapmanız gerekiyor.");
-                    return RedirectToAction("Index", "Login");
+                    Console.WriteLine($"ModelState Error: {error.ErrorMessage}");
                 }
+                return View(model);
+            }
 
-                if (int.TryParse(userIdClaim.Value, out int userId))
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+            {
+                //ModelState.AddModelError("", "Giriş yapmanız gerekiyor.");
+                Console.WriteLine("Kullanıcı oturum açmamış.");
+                return RedirectToAction("Index", "Login");
+            }
+
+            if (int.TryParse(userIdClaim.Value, out int userId))
+            {
+                try
                 {
                     var talep = new Talep
                     {
                         UserId = userId,
+                        Ad = model.Ad,
+                        Soyad = model.Soyad,
+                        Email = model.Email,
+                        SicilNo = model.SicilNo,
                         Ariza = model.Ariza,
                         Bolum = model.Bolum,
                         Birim = model.Birim,
-                        TelNo = model.TelNo
-                        //Email = model.Email
+                        TelNo = model.TelNo,
+                        Ilgilenen = model.Ilgilenen,
+                        Durum = model.Durum
                     };
 
-                    // Context ile başvuru ekleme
                     _context.Taleps.Add(talep);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction("Success");
+                    TempData["SuccessMessage"] = "Talebiniz başarıyla alınmıştır.";
+                    return RedirectToAction("MyApplications");
                 }
-                else
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Geçersiz kullanıcı kimliği.");
+                    Console.WriteLine($"Veritabanı Hatası: {ex.Message}");
+                    ModelState.AddModelError("", "Talebiniz kaydedilemedi. Daha sonra tekrar deneyiniz.");
                 }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Geçersiz kullanıcı kimliği.");
             }
 
             return View(model);
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> MyApplications()

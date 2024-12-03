@@ -1,4 +1,4 @@
-﻿@model Ariza.Models.TalepViewModel
+﻿@model Ariza.Models.Talep
 
 @{
     ViewData["Title"] = "Talep Oluştur";
@@ -17,8 +17,8 @@
 
         table {
             border-collapse: collapse;
-            width: 60%; /* Orta genişlikte olacak şekilde */
-            margin: 20px auto; /* Ortalamak için */
+            width: 60%; 
+            margin: 20px auto; 
         }
 
         th, td {
@@ -50,6 +50,29 @@
                 <th>Bilgi</th>
             </tr>
             <tr>
+                <td><label for="Ad">Ad</label></td>
+                <td>
+                    <input type="text" asp-for="Ad" style="width: 100%;" readonly />
+                    <span asp-validation-for="Ad" style="color: red;"></span>
+
+                </td>
+            </tr>
+            <tr>
+                <td><label for="Soyad">Soyad</label></td>
+                <td>
+                    <input type="text" asp-for="Soyad" style="width: 100%;" readonly />
+                    <span asp-validation-for="Soyad" style="color: red;"></span>
+
+                </td>
+            </tr>
+            <tr>
+                <td><label for="SicilNo">Sicil Numarası</label></td>
+                <td>
+                    <input type="text" asp-for="SicilNo" style="width: 100%;"/>
+                    <span asp-validation-for="SicilNo" style="color: red;"></span>
+                </td>
+            </tr>
+            <tr>
                 <td><label for="Ariza">Arıza Açıklaması</label></td>
                 <td>
                     <input type="text" asp-for="Ariza" style="width: 100%;" />
@@ -73,29 +96,44 @@
             <tr>
                 <td><label for="TelNo">Telefon Numarası</label></td>
                 <td>
-                    <input type="number" asp-for="TelNo" style="width: 100%;" />
+                    <input type="tel" asp-for="TelNo" style="width: 100%;" />
                     <span asp-validation-for="TelNo" style="color: red;"></span>
                 </td>
             </tr>
             <tr>
                 <td><label for="Email">Email</label></td>
                 <td>
-                    <input type="email" asp-for="Email" style="width: 100%;" />
+                    <input type="email" asp-for="Email" style="width: 100%;" readonly />
                     <span asp-validation-for="Email" style="color: red;"></span>
+
                 </td>
             </tr>
-            @* <tr>
-                <td><label for="SicilNo">Sicil Numarası</label></td>
+            <tr>
+                <td><label for="Ilgilenen">İlgilenen Kişi</label></td>
                 <td>
-                    <input type="number" asp-for="SicilNo" style="width: 100%;" />
-                    <span asp-validation-for="SicilNo" style="color: red;"></span>
+                    <input type="text" asp-for="Ilgilenen" style="width: 100%;" />
+                    <span asp-validation-for="Ilgilenen" style="color: red;"></span>
                 </td>
-            </tr>  *@ 
+            </tr>
+            <tr>
+                <td><label for="Durum">Durum</label></td>
+                <td>
+                    <input type="text" asp-for="Durum" style="width: 100%;" />
+                    <span asp-validation-for="Durum" style="color: red;"></span>
+                </td>
+            </tr>
         </table>
 
         <div style="text-align: center; margin-top: 20px;">
             <button type="submit">Talep Gönder</button>
         </div>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div style="color: green; text-align: center; margin-bottom: 20px;">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
     </form>
 </body>
 </html>
