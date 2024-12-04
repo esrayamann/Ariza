@@ -35,13 +35,7 @@ namespace Ariza.Controllers
         //}
         ////
         public async Task<IActionResult> ApplicationList(string sortOrder, string searchString)
-        {
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["SortByNameAsc"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["SortByDateDesc"] = sortOrder == "Date" ? "date_desc" : "Date";
-            ViewData["SortByDateAsc"] = sortOrder == "DateAsc" ? "date_desc" : "DateAsc";
-
-
+        {           
             var taleps = _context.Taleps.AsQueryable();
 
 
@@ -50,16 +44,6 @@ namespace Ariza.Controllers
             {
                 taleps = taleps.Where(t => t.Ad.Contains(searchString) || t.Soyad.Contains(searchString));
             }
-
-            // Sıralama 
-            taleps = sortOrder switch
-            {
-                "name_desc" => taleps.OrderByDescending(t => t.Ad),
-                "Date" => taleps.OrderBy(t => t.CreatedDate),
-                "date_desc" => taleps.OrderByDescending(t => t.CreatedDate),
-                "DateAsc" => taleps.OrderBy(t => t.CreatedDate),
-                _ => taleps.OrderBy(t => t.Ad),
-            };
 
             var sortedTaleps = await taleps.AsNoTracking().ToListAsync();
             return View(sortedTaleps);

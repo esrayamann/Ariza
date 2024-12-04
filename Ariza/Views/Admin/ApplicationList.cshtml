@@ -14,12 +14,6 @@
     </div>
 </form>
 
-<div class="sort-links">
-    <a href="@Url.Action("ApplicationList", new { sortOrder = ViewData["NameSortParm"] })">İsme Göre (A-Z)</a> |
-    <a href="@Url.Action("ApplicationList", new { sortOrder = ViewData["name_desc"] })">İsme Göre (Z-A)</a> |
-    <a href="@Url.Action("ApplicationList", new { sortOrder = ViewData["DateAscSortParm"] })">Tarihe Göre (Eski-Yeni)</a> |
-    <a href="@Url.Action("ApplicationList", new { sortOrder = ViewData["DateSortParm"] })">Tarihe Göre (Yeni-Eski)</a>
-</div>
 
 <html>
 <head>
@@ -29,21 +23,6 @@
             text-align: left;
         }
 
-        .sort-links {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-            .sort-links a {
-                color: #0056b3;
-                text-decoration: none;
-                margin: 0 10px;
-                font-weight: bold;
-            }
-
-                .sort-links a:hover {
-                    text-decoration: underline;
-                }
 
         table {
             border-collapse: collapse;
@@ -81,9 +60,13 @@
                 <tr>
                     <th>Ad</th>
                     <th>Soyad</th>
-                    <th>Email</th>
                     <th>Telefon Numarası</th>
+                    <th>Email</th>
+                    <th>Sorumlu</th>
                     <th>Arıza</th>
+                    <th>Durum</th>
+                    <th>Birim</th>
+                    <th>Bölüm</th>
                     <th>Tarih</th>
                 </tr>
             </thead>
@@ -93,9 +76,13 @@
                     <tr>
                         <td>@talep.Ad</td>
                         <td>@talep.Soyad</td>
-                        <td>@talep.Email</td>
                         <td>@talep.TelNo</td>
+                        <td>@talep.Email</td>
+                        <td>@talep.Ilgilenen</td>
                         <td>@talep.Ariza</td>                      
+                        <td>@talep.Durum</td>                      
+                        <td>@talep.Birim</td>                      
+                        <td>@talep.Bolum</td>                      
                         <td>@talep.CreatedDate</td>                      
                     </tr>
                 }

@@ -1,6 +1,7 @@
 ﻿using Ariza.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Security.Claims;
 
 namespace Ariza.Controllers
@@ -21,7 +22,7 @@ namespace Ariza.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-      
+
            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
            if (userIdClaim == null)
@@ -32,13 +33,12 @@ namespace Ariza.Controllers
                var user = _context.Users.SingleOrDefault(u => u.Id == userId);
                if (user != null)
                {
-                   // Kullanıcı bilgilerini View'e gönder
-                   var model = new Talep
-                   {
-                       Ad = user.Ad,
-                       Soyad = user.Soyad,
-                       Email = user.Email,
-                   };
+                    var model = new Talep
+                    {
+                        Ad = user.Ad,
+                        Soyad = user.Soyad,
+                        Email = user.Email,
+                    };
 
                    return View(model);
                }
@@ -49,44 +49,33 @@ namespace Ariza.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Talep model)
         {
-            if (!ModelState.IsValid)
-            {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine($"ModelState Error: {error.ErrorMessage}");
-                }
-                return View(model);
-            }
 
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            model.UserId = Convert.ToInt32(userIdClaim.Value);
+            var user = _context.Users.SingleOrDefault(u => u.Id == model.UserId);
+
+            if(userIdClaim != null && user != null)
+                ModelState.Remove("User");
+
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                 return View(model);
+            }
+
 
             if (userIdClaim == null)
-            {
-                //ModelState.AddModelError("", "Giriş yapmanız gerekiyor.");
-                Console.WriteLine("Kullanıcı oturum açmamış.");
                 return RedirectToAction("Index", "Login");
-            }
+            
 
             if (int.TryParse(userIdClaim.Value, out int userId))
             {
+
+                model.UserId = userId;
                 try
                 {
-                    var talep = new Talep
-                    {
-                        UserId = userId,
-                        Ad = model.Ad,
-                        Soyad = model.Soyad,
-                        Email = model.Email,
-                        SicilNo = model.SicilNo,
-                        Ariza = model.Ariza,
-                        Bolum = model.Bolum,
-                        Birim = model.Birim,
-                        TelNo = model.TelNo,
-                        Ilgilenen = model.Ilgilenen,
-                        Durum = model.Durum
-                    };
-
-                    _context.Taleps.Add(talep);
+                    _context.Taleps.Add(model);
                     await _context.SaveChangesAsync();
 
                     TempData["SuccessMessage"] = "Talebiniz başarıyla alınmıştır.";
@@ -94,9 +83,37 @@ namespace Ariza.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Veritabanı Hatası: {ex.Message}");
-                    ModelState.AddModelError("", "Talebiniz kaydedilemedi. Daha sonra tekrar deneyiniz.");
+                    Console.WriteLine($"Hata: {ex.Message}");
+                    ModelState.AddModelError("", "Talebiniz kaydedilemedi. Lütfen tekrar deneyin.");
                 }
+                //try
+                //{
+                //    var talep = new Talep
+                //    {
+                //        UserId = userId,
+                //        Ad = model.Ad,
+                //        Soyad = model.Soyad,
+                //        Email = model.Email,
+                //        SicilNo = model.SicilNo,
+                //        Ariza = model.Ariza,
+                //        Bolum = model.Bolum,
+                //        Birim = model.Birim,
+                //        TelNo = model.TelNo,
+                //        Ilgilenen = model.Ilgilenen,
+                //        Durum = model.Durum
+                //    };
+
+                //    _context.Taleps.Add(talep);
+                //    await _context.SaveChangesAsync();
+
+                //    TempData["SuccessMessage"] = "Talebiniz başarıyla alınmıştır.";
+                //    return RedirectToAction("MyApplications");
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"Veritabanı Hatası: {ex.Message}");
+                //    ModelState.AddModelError("", "Talebiniz kaydedilemedi. Daha sonra tekrar deneyiniz.");
+                //}
             }
             else
             {
@@ -105,7 +122,6 @@ namespace Ariza.Controllers
 
             return View(model);
         }
-
 
 
         [HttpGet]
@@ -133,5 +149,13 @@ namespace Ariza.Controllers
         {
             return View();
         }
+
+        //public IActionResult Guncelle(Talep talep)
+        //{
+        //    var user = _context.Taleps.Find(talep.Id);
+        //    user.Ad =talep.Ad;
+        //    _context.SaveChanges();
+        //    return RedirectToAction("MyApplications","Talep");
+        //}
     }
 }

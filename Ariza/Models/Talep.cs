@@ -6,6 +6,7 @@ namespace Ariza.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public int UserId { get; set; }//
         public virtual User User { get; set; }
         [Required(ErrorMessage = "Sicil Numarası gereklidir.")]

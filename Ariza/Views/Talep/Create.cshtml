@@ -136,4 +136,13 @@
 
     </form>
 </body>
+@if (ViewBag.Errors != null)
+{
+    <div style="color:red;">
+        @foreach (var error in ViewBag.Errors)
+        {
+            <p>@error</p>
+        }
+    </div>
+}
 </html>
