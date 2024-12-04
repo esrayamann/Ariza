@@ -7,6 +7,20 @@
 
 <h1>Talepler </h1>
 
+<form method="get">
+    <div>
+        <input type="text" name="searchString" placeholder="İsim Soyisim Ara" value="@Context.Request.Query["searchString"]" />
+        <button type="submit">Ara</button>
+    </div>
+</form>
+
+<div class="sort-links">
+    <a href="@Url.Action("ApplicationList", new { sortOrder = ViewData["NameSortParm"] })">İsme Göre (A-Z)</a> |
+    <a href="@Url.Action("ApplicationList", new { sortOrder = ViewData["name_desc"] })">İsme Göre (Z-A)</a> |
+    <a href="@Url.Action("ApplicationList", new { sortOrder = ViewData["DateAscSortParm"] })">Tarihe Göre (Eski-Yeni)</a> |
+    <a href="@Url.Action("ApplicationList", new { sortOrder = ViewData["DateSortParm"] })">Tarihe Göre (Yeni-Eski)</a>
+</div>
+
 <html>
 <head>
     <style>
@@ -15,10 +29,26 @@
             text-align: left;
         }
 
+        .sort-links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .sort-links a {
+                color: #0056b3;
+                text-decoration: none;
+                margin: 0 10px;
+                font-weight: bold;
+            }
+
+                .sort-links a:hover {
+                    text-decoration: underline;
+                }
+
         table {
             border-collapse: collapse;
-            width: 80%; /* Orta genişlikte olacak şekilde */
-            margin: 20px auto; /* Ortalamak için */
+            width: 80%; 
+            margin: 20px auto; 
         }
 
         th, td {
@@ -54,6 +84,7 @@
                     <th>Email</th>
                     <th>Telefon Numarası</th>
                     <th>Arıza</th>
+                    <th>Tarih</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,9 +93,10 @@
                     <tr>
                         <td>@talep.Ad</td>
                         <td>@talep.Soyad</td>
+                        <td>@talep.Email</td>
                         <td>@talep.TelNo</td>
                         <td>@talep.Ariza</td>                      
-                        <td>@talep.Ariza</td>                      
+                        <td>@talep.CreatedDate</td>                      
                     </tr>
                 }
             </tbody>
