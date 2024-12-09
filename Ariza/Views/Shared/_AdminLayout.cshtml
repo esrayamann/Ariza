@@ -11,11 +11,12 @@
 <body>
 
     <!-- Sidebar -->
-    <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
-        <h3 class="w3-bar-item">Menüler</h3>
+    <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:13%">
+        <h3 class="w3-bar-item">Ad Soyad</h3>
         @*   <a href="/Register/Index/" class="w3-bar-item w3-button">Öğrenci Kimlik Başvuru</a> *@
-        <a href="/Admin/ApplicationList/" class="w3-bar-item w3-button">Arıza Talebinde Bulunanlar</a>
+        <a href="/Admin/ApplicationList/" class="w3-bar-item w3-button">Ana Sayfa</a>
         <a href="/Admin/UserList/" class="w3-bar-item w3-button">Kullanıcı Listesi</a>
+        <a href="/Admin/Rapor/" class="w3-bar-item w3-button">Raporlar</a>
 @*         <a href="/Role/Index/" class="w3-bar-item w3-button">Rolleri Yönet</a>
  *@        @*   <a href="/Login/GirisYap/" class="w3-bar-item w3-button">Çıkış</a>
  *@
@@ -26,18 +27,49 @@
     </div>
 
     <!-- Page Content -->
-    <div style="margin-left:25%">
+    <div style="margin-left:13%">
 
         <div class="w3-container w3-teal">
-            <h1>Hoşgeldiniz</h1>
+            <h1>Süleyman Demirel Üniversitesi</h1>
         </div>
 
 
         <div class="w3-container">
             @RenderBody()
         </div>
-
     </div>
 
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $('#SicilNo').on('change', function () {
+                var sicilNo = $(this).val();
+
+                if (sicilNo) {
+                    $.ajax({
+                        url: '/Talep/GetTalepInfo',
+                        type: 'GET',
+                        data: { sicilNo: sicilNo },
+                        success: function (response) {
+                            if (response.success) {
+                                $('#Bolum').val(response.data.Bolum);
+                                $('#Birim').val(response.data.Birim);
+                                $('#Ad').val(response.data.Ad);
+                                $('#Soyad').val(response.data.Soyad);
+                                $('#TelNo').val(response.data.TelNo);
+                                $('#Ariza').val(response.data.Ariza);
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function () {
+                            alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

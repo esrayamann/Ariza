@@ -50,6 +50,13 @@
                 <th>Bilgi</th>
             </tr>
             <tr>
+                <td><label for="SicilNo">Sicil Numarası</label></td>
+                <td>
+                    <input type="text" asp-for="SicilNo" style="width: 100%;" />
+                    <span asp-validation-for="SicilNo" style="color: red;"></span>
+                </td>
+            </tr>
+            <tr>
                 <td><label for="Ad">Ad</label></td>
                 <td>
                     <input type="text" asp-for="Ad" style="width: 100%;" readonly />
@@ -64,14 +71,7 @@
                     <span asp-validation-for="Soyad" style="color: red;"></span>
 
                 </td>
-            </tr>
-            <tr>
-                <td><label for="SicilNo">Sicil Numarası</label></td>
-                <td>
-                    <input type="text" asp-for="SicilNo" style="width: 100%;"/>
-                    <span asp-validation-for="SicilNo" style="color: red;"></span>
-                </td>
-            </tr>
+            </tr>           
             <tr>
                 <td><label for="Ariza">Arıza Açıklaması</label></td>
                 <td>
@@ -108,20 +108,7 @@
 
                 </td>
             </tr>
-            <tr>
-                <td><label for="Ilgilenen">İlgilenen Kişi</label></td>
-                <td>
-                    <input type="text" asp-for="Ilgilenen" style="width: 100%;" />
-                    <span asp-validation-for="Ilgilenen" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Durum">Durum</label></td>
-                <td>
-                    <input type="text" asp-for="Durum" style="width: 100%;" />
-                    <span asp-validation-for="Durum" style="color: red;"></span>
-                </td>
-            </tr>
+            
         </table>
 
         <div style="text-align: center; margin-top: 20px;">
@@ -136,6 +123,7 @@
 
     </form>
 </body>
+
 @if (ViewBag.Errors != null)
 {
     <div style="color:red;">

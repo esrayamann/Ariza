@@ -86,34 +86,7 @@ namespace Ariza.Controllers
                     Console.WriteLine($"Hata: {ex.Message}");
                     ModelState.AddModelError("", "Talebiniz kaydedilemedi. Lütfen tekrar deneyin.");
                 }
-                //try
-                //{
-                //    var talep = new Talep
-                //    {
-                //        UserId = userId,
-                //        Ad = model.Ad,
-                //        Soyad = model.Soyad,
-                //        Email = model.Email,
-                //        SicilNo = model.SicilNo,
-                //        Ariza = model.Ariza,
-                //        Bolum = model.Bolum,
-                //        Birim = model.Birim,
-                //        TelNo = model.TelNo,
-                //        Ilgilenen = model.Ilgilenen,
-                //        Durum = model.Durum
-                //    };
-
-                //    _context.Taleps.Add(talep);
-                //    await _context.SaveChangesAsync();
-
-                //    TempData["SuccessMessage"] = "Talebiniz başarıyla alınmıştır.";
-                //    return RedirectToAction("MyApplications");
-                //}
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine($"Veritabanı Hatası: {ex.Message}");
-                //    ModelState.AddModelError("", "Talebiniz kaydedilemedi. Daha sonra tekrar deneyiniz.");
-                //}
+               
             }
             else
             {
@@ -157,5 +130,88 @@ namespace Ariza.Controllers
         //    _context.SaveChanges();
         //    return RedirectToAction("MyApplications","Talep");
         //}
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var talep = _context.Taleps.SingleOrDefault(t => t.Id == id);
+
+            if (talep == null)
+                return NotFound();
+
+            return View(talep);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Talep model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return View(model);
+            }
+
+            var guncelTalep = await _context.Taleps.FindAsync(model.Id);
+            if (guncelTalep == null)
+                return NotFound();
+
+            // Güncellenebilir alanları atama
+            guncelTalep.SicilNo = model.SicilNo;
+            guncelTalep.Ad = model.Ad;
+            guncelTalep.Soyad = model.Soyad;
+            guncelTalep.TelNo = model.TelNo;
+            guncelTalep.Email = model.Email;
+            guncelTalep.Ariza = model.Ariza;
+            guncelTalep.Birim = model.Birim;
+            guncelTalep.Bolum = model.Bolum;
+
+            try
+            {
+                _context.Taleps.Update(guncelTalep);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Başarıyla güncellendi.";
+                return RedirectToAction("MyApplications");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Hata: {ex.Message}");
+                ModelState.AddModelError("", "Talep güncellenemedi. Lütfen tekrar deneyin.");
+            }
+
+            return View(model); 
+        }
+
+        //
+
+        [HttpGet]
+        public IActionResult GetTalepInfo(string sicilNo)
+        {
+            if (string.IsNullOrEmpty(sicilNo))
+            {
+                return Json(new { success = false, message = "Sicil numarası boş olamaz." });
+            }
+
+            // Taleps tablosundan sicil numarasına göre veri getir
+            var talep = _context.Taleps.SingleOrDefault(t => t.SicilNo == sicilNo);
+
+            if (talep == null)
+            {
+                return Json(new { success = false, message = "Bu sicil numarasıyla eşleşen kayıt bulunamadı." });
+            }
+
+            // Gerekli bilgileri döndür
+            return Json(new
+            {
+                success = true,
+                data = new
+                {
+                    talep.Ad,
+                    talep.Soyad,
+                    talep.Bolum,
+                    talep.Birim,
+                    talep.TelNo,
+                    talep.Ariza // Eğer arıza açıklamasını da doldurmak istiyorsanız
+                }
+            });
+        }
+
     }
 }
