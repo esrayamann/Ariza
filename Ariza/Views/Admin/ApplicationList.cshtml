@@ -76,15 +76,41 @@
                         <td>@talep.CreatedDate</td>
                         <td>
                             <button type="button" onclick="printRow(this)">Yazdır</button>
-                            <button type="button">Detay</button>
-                        </td> 
-                       
+                            <button onclick="location.href='@Url.Action("Edit", "Talep", new { id = talep.Id })'">Detay</button>
 
+@*                             <button type="button">Detay</button>
+ *@                        </td>                        
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <script>
+        function printRow(button) {
+            // Seçilen satırı al
+            var row = button.closest('tr').innerHTML;
+
+            // Yeni bir yazdırma penceresi oluştur
+            var printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Yazdır</title></head><body>');
+            printWindow.document.write('<table border="1" style="width:100%; text-align:left;">');
+            printWindow.document.write('<tr>' + row + '</tr>');
+            printWindow.document.write('</table>');
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+
+            // Yazdır
+            printWindow.print();
+        }
+    </script>
+
+    <div id="detailsModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px; border:1px solid #ccc; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
+        <h3>Detaylar</h3>
+        <div id="detailsContent"></div>
+        <button onclick="closeModal()">Kapat</button>
+    </div>
+
 
 </body>
 </html>

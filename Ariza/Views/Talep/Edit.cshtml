@@ -1,7 +1,7 @@
 ﻿@model Ariza.Models.Talep
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Talep Güncelle";
     Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
 }
 
@@ -43,7 +43,7 @@
     </style>
 </head>
 <body>
-    <form asp-action="Create" method="post">
+    <form asp-action="Edit" method="post">
         <table>
             <tr>
                 <th>Alan</th>
@@ -112,7 +112,7 @@
         </table>
 
         <div style="text-align: center; margin-top: 20px;">
-            <button type="submit">Talep Gönder</button>
+            <button type="submit">Güncelle</button>
         </div>
         @if (TempData["SuccessMessage"] != null)
         {

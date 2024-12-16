@@ -123,13 +123,6 @@ namespace Ariza.Controllers
             return View();
         }
 
-        //public IActionResult Guncelle(Talep talep)
-        //{
-        //    var user = _context.Taleps.Find(talep.Id);
-        //    user.Ad =talep.Ad;
-        //    _context.SaveChanges();
-        //    return RedirectToAction("MyApplications","Talep");
-        //}
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -143,6 +136,12 @@ namespace Ariza.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Talep model)
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null)
+            {
+                ModelState.Remove("User");
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
@@ -153,7 +152,6 @@ namespace Ariza.Controllers
             if (guncelTalep == null)
                 return NotFound();
 
-            // Güncellenebilir alanları atama
             guncelTalep.SicilNo = model.SicilNo;
             guncelTalep.Ad = model.Ad;
             guncelTalep.Soyad = model.Soyad;
@@ -165,10 +163,10 @@ namespace Ariza.Controllers
 
             try
             {
-                _context.Taleps.Update(guncelTalep);
+                //_context.Taleps.Update(guncelTalep);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Başarıyla güncellendi.";
-                return RedirectToAction("MyApplications");
+                return RedirectToAction("Success");
             }
             catch (Exception ex)
             {

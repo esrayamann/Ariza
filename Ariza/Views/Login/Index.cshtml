@@ -57,3 +57,94 @@
 </body>
 </html>
 
+
+
+
+
+@* @{
+	ViewData["Title"] = "GirisYap";
+}
+
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Giriş Yap</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+			background-color: whitesmoke;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }  
+		button {
+			background-color: #960205;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			cursor: pointer;
+		}
+
+			button:hover {
+				background-color: #620203;
+			}
+
+		table, td, th {
+			border: 1px solid grey;
+			text-align: left;
+		}
+
+		table {
+			border-collapse: collapse;
+			width: 60%;
+			margin: 20px auto;
+		}
+
+		th, td {
+			padding: 15px;
+		}
+
+		th {
+			background-color: grey;
+		}
+    </style>
+</head>
+	<body>
+	<form method="post">
+		<table>
+			<tr>
+			<td>
+		<div class="email">
+			<p>Email adresi:</p>
+			<input type="email" class="email" name="Email" placeholder="email" required="">
+		</div>
+			</td>
+			</tr>
+			<tr>
+			<td>
+		<div class="password">
+			<p>Şifre:</p>
+			<input type="password" class="password" name="Sifre" placeholder="şifre" required="">
+		</div>
+			</td>
+			</tr>
+			<tr>
+			<td>
+		<div style="text-align: center; margin-top: 20px;">
+			<button type="submit">Giriş Yap</button>
+		</div>
+			</td>
+			</tr>
+		</table>
+
+	</form>
+	</body>
+</html>
+ *@

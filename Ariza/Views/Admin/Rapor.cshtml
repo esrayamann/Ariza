@@ -8,7 +8,7 @@
 
 <h1>Rapor</h1>
 
-<form method="get" asp-action="Rapor">
+<form method="post" asp-action="Rapor">
     <div>
         <label for="startDate">Başlangıç Tarihi:</label>
         <input type="date" id="startDate" name="startDate" value="@ViewData["StartDate"]" />
@@ -23,8 +23,7 @@
 <table border="1" cellpadding="5" cellspacing="0" style="margin-top: 20px; width: 100%;">
     <thead>
         <tr>
-            <th>Ad</th>
-            <th>Soyad</th>
+            <th>Ad Soyad</th>
             <th>Arıza Açıklaması</th>
             <th>Bölüm</th>
             <th>Birim</th>
@@ -35,8 +34,7 @@
         @foreach (var talep in Model)
         {
             <tr>
-                <td>@talep.Ad</td>
-                <td>@talep.Soyad</td>
+                <td>@talep.Ad @talep.Soyad</td>
                 <td>@talep.Ariza</td>
                 <td>@talep.Bolum</td>
                 <td>@talep.Birim</td>
