@@ -12,9 +12,13 @@
 
     <!-- Sidebar -->
     <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:13%">
-        <h3 class="w3-bar-item">Menüler</h3>
+        <h3 class="w3-bar-item">
+            @User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value
+        </h3>
+        <a href="/Kullanici/Index/" class="w3-bar-item w3-button">Ana Sayfa</a>
         <a href="/Talep/Create/" class="w3-bar-item w3-button">Servis Kayıt</a>
-        <a href="/Talep/MyApplications/" class="w3-bar-item w3-button">Taleplerim</a>   
+        <a href="/Talep/MyApplications/" class="w3-bar-item w3-button">Taleplerim</a>
+        <a href="/Kullanici/Rapor/" class="w3-bar-item w3-button">Raporlar</a
        <form asp-action="Index" asp-controller="Login" method="post" class="form-inline">
             <button type="submit" class="btn btn-link">Oturumu Kapat</button>
         </form>

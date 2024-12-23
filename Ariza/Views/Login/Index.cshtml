@@ -1,150 +1,130 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
+﻿@{
+    ViewData["Title"] = "GirisYap";
 }
 @{
-	Layout = null;
-}
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Giriş Yap</title>
-	<!-- metatags-->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="keywords" content="wedlock register form a Flat Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
-	<script type="application/x-javascript">
-		 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-		function hideURLbar(){ window.scrollTo(0,1); } </script>
-	<!-- Meta tag Keywords -->
-	<!-- css -->
-	<link rel="stylesheet" href="~/web1/css/style.css" type="text/css" media="all" />
-	<!--// css -->
-	<link href="~/web1///fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
-	<link href="~/web1///fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
-	<link href="~/web1///fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
-</head>
-<body>
-	<section class="agile-header">
-		<div class="agile-heading">
-			<h1><span class="image"></span><label>T</label>eknik <label>S</label>ervis <label>A</label>rıza <label>T</label>alep <label>F</label>ormu</h1>
-		</div>
-		<div class="agile-form">
-			<form method="post">
-				<div class="agile-email">
-					<p>email-adres</p>
-					<input type="email" class="email" name="Email" placeholder="email-adres" required="">
-				</div>
-				<div class="agile-password">
-					<p>Şifre</p>
-					<input type="password" class="password" name="Sifre" placeholder="şifre" required="">
-				</div>
-				<div class="agile-submit">
-					<input type="submit" value="Giriş Yap">
-				</div>
-				
-			</form>
-		</div>
-		<div class="clear"></div>
-		<footer>
-		</footer>
-
-	</section>
-
-</body>
-</html>
-
-
-
-
-
-@* @{
-	ViewData["Title"] = "GirisYap";
-}
-
-@{
-	Layout = null;
+    Layout = null;
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş Yap</title>
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-			background-color: whitesmoke;
+            background-color: whitesmoke;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-        }  
-		button {
-			background-color: #960205;
-			color: white;
-			padding: 10px 20px;
-			border: none;
-			cursor: pointer;
-		}
+        }
 
-			button:hover {
-				background-color: #620203;
-			}
+        form {
+            background-color: white;
+            padding: 30px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
 
-		table, td, th {
-			border: 1px solid grey;
-			text-align: left;
-		}
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-		table {
-			border-collapse: collapse;
-			width: 60%;
-			margin: 20px auto;
-		}
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+        }
 
-		th, td {
-			padding: 15px;
-		}
+        .university-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0 5px 0;
+        }
 
-		th {
-			background-color: grey;
-		}
+        .department-name {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group p {
+                text-align: left;
+                margin: 0 0 5px 0;
+                font-size: 0.9rem;
+                color: #333;
+            }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 0.9rem;
+        }
+
+            input[type="email"]:focus,
+            input[type="password"]:focus {
+                outline: none;
+                border-color: #960205;
+                box-shadow: 0 0 0 2px rgba(150, 2, 5, 0.1);
+            }
+
+        .button-container {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        button {
+            background-color: #c60f11;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+            button:hover {
+                background-color: #c60f11;
+            }
     </style>
 </head>
-	<body>
-	<form method="post">
-		<table>
-			<tr>
-			<td>
-		<div class="email">
-			<p>Email adresi:</p>
-			<input type="email" class="email" name="Email" placeholder="email" required="">
-		</div>
-			</td>
-			</tr>
-			<tr>
-			<td>
-		<div class="password">
-			<p>Şifre:</p>
-			<input type="password" class="password" name="Sifre" placeholder="şifre" required="">
-		</div>
-			</td>
-			</tr>
-			<tr>
-			<td>
-		<div style="text-align: center; margin-top: 20px;">
-			<button type="submit">Giriş Yap</button>
-		</div>
-			</td>
-			</tr>
-		</table>
+<body>
+    <form method="post">
+        <div class="header">
+            <img src="~/sdu_logo.jpg" class="logo" alt="SDU Logo" />
+            <p class="university-name">Süleyman Demirel Üniversitesi</p>
+            <p class="department-name">Bilgi İşlem Daire Başkanlığı</p>
+            <p class="department-name">Teknik Servis</p>
+        </div>
 
-	</form>
-	</body>
+        <div class="form-group">
+            <p>Kullanıcı Adı</p>
+            <input type="email" name="Email" placeholder="Kullanıcı Adı" required>
+        </div>
+
+        <div class="form-group">
+            <p>Şifre</p>
+            <input type="password" name="Sifre" placeholder="Şifre" required>
+        </div>
+
+        <div class="button-container">
+            <button type="submit">Giriş Yap</button>
+        </div>
+    </form>
+</body>
 </html>
- *@

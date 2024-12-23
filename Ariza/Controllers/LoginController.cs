@@ -34,8 +34,8 @@ namespace Ariza.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Email)
-                    //new Claim(ClaimTypes.Email, p.Email)
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.GivenName, user.Ad + " " + user.Soyad)//
                 };
 
                 foreach (var role in user.UserRoles.Select(ur => ur.Role.Rol))
@@ -53,7 +53,7 @@ namespace Ariza.Controllers
 
                 if (user.UserRoles.Any(ur => ur.RoleId == 1))
                 {
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("ApplicationList", "Admin");
                 }
                 else if (user.UserRoles.Any(ur => ur.RoleId == 2))
                 {

@@ -1,0 +1,73 @@
+﻿@model List<Talep>
+
+<form method="get">
+    <div>
+        <input type="text" name="searchString" placeholder="İsim Soyisim Ara" value="@Context.Request.Query["searchString"]" />
+        <button type="submit">Ara</button>
+    </div>
+</form>
+
+<head>
+    <style>
+        table, td, th {
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th, td {
+            padding: 15px;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #e0f7fa;
+        }
+
+        .container {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<div class="container">
+    <table>
+        <thead>
+            <tr>
+                <th>Ad Soyad</th>
+                <th>İletişim</th>
+                <th>Birim</th>
+                <th>Tarih</th>
+                <th>Detay</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var talep in Model)
+            {
+                <tr>
+                    <td>@talep.Ad @talep.Soyad</td>
+                    <td>@talep.TelNo</td>
+                    <td>@talep.Birim</td>
+                    <td>@talep.CreatedDate</td>
+                    <td>
+                        <button type="button" onclick="printRow(this)">Yazdır</button>
+                        <button onclick="location.href='@Url.Action("Edit", "Talep", new { id = talep.Id })'">Detay</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

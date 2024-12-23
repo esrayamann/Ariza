@@ -1,0 +1,77 @@
+﻿@using Azure.Core
+@model IEnumerable<Ariza.Models.Talep>
+@{
+    ViewData["Title"] = "Rapor";
+    Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+}
+
+<h1>KRapor</h1>
+<style>
+    table, td, th {
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+
+    table {
+        border-collapse: collapse;
+        width: 80%;
+        margin: 20px auto;
+    }
+
+    th, td {
+        padding: 15px;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #e0f7fa;
+    }
+
+    .container {
+        margin-top: 30px;
+        text-align: center;
+    }
+</style>
+<form method="post" asp-action="Rapor">
+    <div>
+        <label for="startDate">Başlangıç Tarihi:</label>
+        <input type="date" id="startDate" name="startDate" value="@ViewData["StartDate"]" />
+    </div>
+    <div>
+        <label for="endDate">Bitiş Tarihi:</label>
+        <input type="date" id="endDate" name="endDate" value="@ViewData["EndDate"]" />
+    </div>
+    <button type="submit">Filtrele</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Ad Soyad</th>
+            <th>Arıza Açıklaması</th>
+            <th>Bölüm</th>
+            <th>Birim</th>
+            <th>Oluşturulma Tarihi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var talep in Model)
+        {
+            <tr>
+                <td>@talep.Ad @talep.Soyad</td>
+                <td>@talep.Ariza</td>
+                <td>@talep.Bolum</td>
+                <td>@talep.Birim</td>
+                <td>@talep.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+            </tr>
+        }
+    </tbody>
+</table>

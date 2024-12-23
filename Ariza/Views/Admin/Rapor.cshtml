@@ -6,7 +6,41 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Rapor</h1>
+<h1>ARapor</h1>
+<style>
+    table, td, th {
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+
+    table {
+        border-collapse: collapse;
+        width: 80%;
+        margin: 20px auto;
+    }
+
+    th, td {
+        padding: 15px;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #e0f7fa;
+    }
+
+    .container {
+        margin-top: 30px;
+        text-align: center;
+    }
+</style>
 
 <form method="post" asp-action="Rapor">
     <div>
