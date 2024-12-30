@@ -166,7 +166,7 @@ namespace Ariza.Controllers
                 //_context.Taleps.Update(guncelTalep);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Başarıyla güncellendi.";
-                return RedirectToAction("Success");
+                //return RedirectToAction("Success");
             }
             catch (Exception ex)
             {

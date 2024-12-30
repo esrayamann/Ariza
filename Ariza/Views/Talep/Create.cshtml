@@ -5,132 +5,104 @@
     Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
 }
 
-<h2>Talep Oluştur</h2>
+<div class="container py-4">
+    <h2 class="mb-4">Talep Oluştur</h2>
 
-<html>
-<head>
-    <style>
-        table, td, th {
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 60%; 
-            margin: 20px auto; 
-        }
-
-        th, td {
-            padding: 15px;
-        }
-
-        th {
-            background-color: white;
-        }
-
-        button {
-            background-color: #549386;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-            button:hover {
-                background-color: #549386;
-            }
-    </style>
-</head>
-<body>
     <form asp-action="Create" method="post">
-        <table>
-            <tr>
-                <th>Alan</th>
-                <th>Bilgi</th>
-            </tr>
-            <tr>
-                <td><label for="SicilNo">Sicil Numarası</label></td>
-                <td>
-                    <input type="text" asp-for="SicilNo" style="width: 100%;" />
-                    <span asp-validation-for="SicilNo" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Ad">Ad</label></td>
-                <td>
-                    <input type="text" asp-for="Ad" style="width: 100%;" readonly />
-                    <span asp-validation-for="Ad" style="color: red;"></span>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <label for="SicilNo" class="col-sm-3 col-form-label">Sicil Numarası</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" asp-for="SicilNo" />
+                        <span asp-validation-for="SicilNo" class="text-danger"></span>
+                    </div>
+                </div>
 
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Soyad">Soyad</label></td>
-                <td>
-                    <input type="text" asp-for="Soyad" style="width: 100%;" readonly />
-                    <span asp-validation-for="Soyad" style="color: red;"></span>
+                <div class="row mb-3">
+                    <label for="Ad" class="col-sm-3 col-form-label">Ad</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" asp-for="Ad" readonly />
+                        <span asp-validation-for="Ad" class="text-danger"></span>
+                    </div>
+                </div>
 
-                </td>
-            </tr>           
-            <tr>
-                <td><label for="Ariza">Arıza Açıklaması</label></td>
-                <td>
-                    <input type="text" asp-for="Ariza" style="width: 100%;" />
-                    <span asp-validation-for="Ariza" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Bolum">Bölüm</label></td>
-                <td>
-                    <input type="text" asp-for="Bolum" style="width: 100%;" />
-                    <span asp-validation-for="Bolum" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Birim">Birim</label></td>
-                <td>
-                    <input type="text" asp-for="Birim" style="width: 100%;" />
-                    <span asp-validation-for="Birim" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="TelNo">Telefon Numarası</label></td>
-                <td>
-                    <input type="tel" asp-for="TelNo" style="width: 100%;" />
-                    <span asp-validation-for="TelNo" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Email">Email</label></td>
-                <td>
-                    <input type="email" asp-for="Email" style="width: 100%;" readonly />
-                    <span asp-validation-for="Email" style="color: red;"></span>
+                <div class="row mb-3">
+                    <label for="Soyad" class="col-sm-3 col-form-label">Soyad</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" asp-for="Soyad" readonly />
+                        <span asp-validation-for="Soyad" class="text-danger"></span>
+                    </div>
+                </div>
 
-                </td>
-            </tr>
-            
-        </table>
+                <div class="row mb-3">
+                    <label for="Bolum" class="col-sm-3 col-form-label">Bölüm</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" asp-for="Bolum" />
+                        <span asp-validation-for="Bolum" class="text-danger"></span>
+                    </div>
+                </div>
 
-        <div style="text-align: center; margin-top: 20px;">
-            <button type="submit">Kaydet</button>
+                <div class="row mb-3">
+                    <label for="Birim" class="col-sm-3 col-form-label">Birim</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" asp-for="Birim" />
+                        <span asp-validation-for="Birim" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="Ariza" class="col-sm-3 col-form-label">Arıza Açıklaması</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" asp-for="Ariza" rows="3"></textarea>
+                        <span asp-validation-for="Ariza" class="text-danger"></span>
+                    </div>
+                </div>
+
+               
+
+                <div class="row mb-3">
+                    <label for="TelNo" class="col-sm-3 col-form-label">Telefon Numarası</label>
+                    <div class="col-sm-9">
+                        <input type="tel" class="form-control" asp-for="TelNo" />
+                        <span asp-validation-for="TelNo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="Email" class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                        <input type="email" class="form-control" asp-for="Email" readonly />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-save me-2"></i>Kaydet
+            </button>
+        </div>
+
         @if (TempData["SuccessMessage"] != null)
         {
-            <div style="color: green; text-align: center; margin-bottom: 20px;">
-                @TempData["SuccessMessage"]
+            <div class="alert alert-success d-flex align-items-center mt-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <div>
+                    Talep Başarıyla Oluşturuldu.
+                </div>
             </div>
         }
 
-    </form>
-</body>
-
-@if (ViewBag.Errors != null)
-{
-    <div style="color:red;">
-        @foreach (var error in ViewBag.Errors)
+        @if (ViewBag.Errors != null)
         {
-            <p>@error</p>
+            <div class="alert alert-danger mt-4">
+                @foreach (var error in ViewBag.Errors)
+                {
+                    <p class="mb-0">@error</p>
+                }
+            </div>
         }
-    </div>
-}
-</html>
+    </form>
+</div>

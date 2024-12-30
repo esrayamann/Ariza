@@ -5,73 +5,116 @@
     Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
 }
 
-<h1>KRapor</h1>
-<style>
-    table, td, th {
-        border: 1px solid #ddd;
-        text-align: left;
-    }
+<div class="container mt-4">
+ @*    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">
+                    <i class="bi bi-graph-up me-2"></i>Rapor
+                </h2>
+                <button class="btn btn-outline-primary" onclick="window.print()">
+                    <i class="bi bi-printer me-2"></i>Yazdır
+                </button>
+            </div>
+        </div>
+    </div> *@
 
-
-    table {
-        border-collapse: collapse;
-        width: 80%;
-        margin: 20px auto;
-    }
-
-    th, td {
-        padding: 15px;
-    }
-
-    th {
-        background-color: #f4f4f4;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    tr:hover {
-        background-color: #e0f7fa;
-    }
-
-    .container {
-        margin-top: 30px;
-        text-align: center;
-    }
-</style>
-<form method="post" asp-action="Rapor">
-    <div>
-        <label for="startDate">Başlangıç Tarihi:</label>
-        <input type="date" id="startDate" name="startDate" value="@ViewData["StartDate"]" />
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="post" asp-action="Rapor" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="startDate" class="form-label">Başlangıç Tarihi</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-calendar-event"></i>
+                        </span>
+                        <input type="date"
+                               class="form-control"
+                               id="startDate"
+                               name="startDate"
+                               value="@ViewData["StartDate"]" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="endDate" class="form-label">Bitiş Tarihi</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-calendar-event"></i>
+                        </span>
+                        <input type="date"
+                               class="form-control"
+                               id="endDate"
+                               name="endDate"
+                               value="@ViewData["EndDate"]" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-funnel me-2"></i>Filtrele
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div>
-        <label for="endDate">Bitiş Tarihi:</label>
-        <input type="date" id="endDate" name="endDate" value="@ViewData["EndDate"]" />
-    </div>
-    <button type="submit">Filtrele</button>
-</form>
 
-<table>
-    <thead>
-        <tr>
-            <th>Ad Soyad</th>
-            <th>Arıza Açıklaması</th>
-            <th>Bölüm</th>
-            <th>Birim</th>
-            <th>Oluşturulma Tarihi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var talep in Model)
-        {
-            <tr>
-                <td>@talep.Ad @talep.Soyad</td>
-                <td>@talep.Ariza</td>
-                <td>@talep.Bolum</td>
-                <td>@talep.Birim</td>
-                <td>@talep.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
-            </tr>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Ad Soyad</th>
+                            <th>Arıza Açıklaması</th>
+                            <th>Bölüm</th>
+                            <th>Birim</th>
+                            <th>Tarih</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var talep in Model)
+                        {
+                            <tr>
+                                <td>@talep.Ad @talep.Soyad</td>
+                                <td>
+                                    <div class="text-truncate" style="max-width: 200px;" title="@talep.Ariza">
+                                        @talep.Ariza
+                                    </div>
+                                </td>
+                                <td>@talep.Bolum</td>
+                                <td>@talep.Birim</td>
+                                <td>
+                                    <div>@talep.CreatedDate.ToString("dd.MM.yyyy")</div>
+                                    <small class="text-muted">@talep.CreatedDate.ToString("HH:mm")</small>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .table > :not(caption) > * > * {
+            padding: 1rem 0.75rem;
         }
-    </tbody>
-</table>
+
+        .card {
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        .input-group-text {
+            background-color: transparent;
+        }       
+
+        .card {
+            box-shadow: none !important;
+        }
+
+        
+    </style>
+}

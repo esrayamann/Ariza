@@ -26,6 +26,51 @@ namespace Ariza.Controllers
             return View(users);
 
         }
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult CreateUser()
+        {
+            ModelState.Clear();
+            return View(new User());
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(User model)
+        {
+            if (string.IsNullOrEmpty(model.Ad) || string.IsNullOrEmpty(model.Soyad) || string.IsNullOrEmpty(model.Email))
+            {
+                ModelState.AddModelError(string.Empty, "Tüm alanlar doldurulmalıdır.");
+                return View(model);
+            }
+
+            if (model == null)
+            {
+                return BadRequest("Kullanıcı bilgileri eksik.");
+            }
+
+            // Yeni kullanıcıyı ekliyoruz
+            var newUser = new User
+            {
+                Ad = model.Ad,
+                Soyad = model.Soyad,
+                Email = model.Email,
+                Sifre = model.Sifre
+            };
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            // UserRole ekliyoruz
+            var userRole = new UserRole
+            {
+                UserId = newUser.Id,
+                RoleId = 2
+            };
+
+            _context.UserRoles.Add(userRole);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
         //public async Task<IActionResult> ApplicationList()
         //{
         //    var taleps = await _context.GetAllApplicationsAsync();
@@ -64,6 +109,7 @@ namespace Ariza.Controllers
             return View(filteredTaleps);
         }
     }
+
 }
 
 

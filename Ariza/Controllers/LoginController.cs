@@ -57,7 +57,7 @@ namespace Ariza.Controllers
                 }
                 else if (user.UserRoles.Any(ur => ur.RoleId == 2))
                 {
-                    return RedirectToAction("Index", "Kullanici");
+                    return RedirectToAction("ApplicationList", "Kullanici");
                 }
                 else
                 {

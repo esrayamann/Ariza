@@ -1,0 +1,8 @@
+﻿@model List<Talep>
+
+@{
+    ViewData["Title"] = "ApplicationList";
+    Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+}
+
+@await Html.PartialAsync("_TalepListesi", Model)

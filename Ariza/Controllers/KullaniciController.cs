@@ -18,6 +18,20 @@ namespace Ariza.Controllers
             // Veriyi View'e gönder
             return View(talepler);
         }
+        public async Task<IActionResult> ApplicationList(string searchString)
+        {
+            var taleps = _context.Taleps.AsQueryable();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                taleps = taleps.Where(t => t.Ad.Contains(searchString) || t.Soyad.Contains(searchString));
+            }
+
+            taleps = taleps.OrderByDescending(u => u.CreatedDate);
+
+            var sortedTaleps = await taleps.AsNoTracking().ToListAsync();
+            return View(sortedTaleps);
+        }
         public async Task<IActionResult> Rapor(DateTime? startDate, DateTime? endDate)
         {
             var taleps = _context.Taleps.AsQueryable();
@@ -35,5 +49,6 @@ namespace Ariza.Controllers
             ViewData["EndDate"] = endDate?.ToString("yyyy-MM-dd");
             return View(filteredTaleps);
         }
+
     }
 }
