@@ -1,140 +1,4 @@
-﻿@* @model Ariza.Models.Talep
-
-@{
-    ViewData["Title"] = "Talep Güncelle";
-    Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
-}
-
-<h1>Güncelle</h1>
-
-<html>
-<head>
-    <style>
-        table, td, th {
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 60%;
-            margin: 20px auto;
-        }
-
-        th, td {
-            padding: 15px;
-        }
-
-        th {
-            background-color: white;
-        }
-
-        button {
-            background-color: #549386;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-            button:hover {
-                background-color: #549386;
-            }
-    </style>
-</head>
-<body>
-    <form asp-action="Edit" method="post">
-        <table>
-            <tr>
-                <th>Alan</th>
-                <th>Bilgi</th>
-            </tr>
-            <tr>
-                <td><label for="Ad">Ad</label></td>
-                <td>
-                    <input type="text" asp-for="Ad" style="width: 100%;" readonly />
-                    <span asp-validation-for="Ad" style="color: red;"></span>
-
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Soyad">Soyad</label></td>
-                <td>
-                    <input type="text" asp-for="Soyad" style="width: 100%;" readonly />
-                    <span asp-validation-for="Soyad" style="color: red;"></span>
-
-                </td>
-            </tr>
-            <tr>
-                <td><label for="SicilNo">Sicil Numarası</label></td>
-                <td>
-                    <input type="text" asp-for="SicilNo" style="width: 100%;" />
-                    <span asp-validation-for="SicilNo" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Ariza">Arıza Açıklaması</label></td>
-                <td>
-                    <input type="text" asp-for="Ariza" style="width: 100%;" />
-                    <span asp-validation-for="Ariza" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Bolum">Bölüm</label></td>
-                <td>
-                    <input type="text" asp-for="Bolum" style="width: 100%;" />
-                    <span asp-validation-for="Bolum" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Birim">Birim</label></td>
-                <td>
-                    <input type="text" asp-for="Birim" style="width: 100%;" />
-                    <span asp-validation-for="Birim" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="TelNo">Telefon Numarası</label></td>
-                <td>
-                    <input type="tel" asp-for="TelNo" style="width: 100%;" />
-                    <span asp-validation-for="TelNo" style="color: red;"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="Email">Email</label></td>
-                <td>
-                    <input type="email" asp-for="Email" style="width: 100%;" readonly />
-                    <span asp-validation-for="Email" style="color: red;"></span>
-
-                </td>
-            </tr>
-            
-        </table>
-
-        <div style="text-align: center; margin-top: 20px;">
-            <button type="submit">Güncelle</button>
-        </div>
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div style="color: green; text-align: center; margin-bottom: 20px;">
-                @TempData["SuccessMessage"]
-            </div>
-        }
-
-    </form>
-</body>
-@if (ViewBag.Errors != null)
-{
-    <div style="color:red;">
-        @foreach (var error in ViewBag.Errors)
-        {
-            <p>@error</p>
-        }
-    </div>
-}
-</html>
- *@
-
+﻿
 @model Ariza.Models.Talep
 
 @{
@@ -207,7 +71,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" asp-for="Bolum" />
-                                    <label asp-for="Bolum">Bölüm</label>
+                                    <label asp-for="Bolum">Fakülte</label>
                                     <span asp-validation-for="Bolum" class="text-danger"></span>
                                 </div>
                             </div>
@@ -232,6 +96,13 @@
                                     <textarea class="form-control" asp-for="Ariza" style="height: 100px"></textarea>
                                     <label asp-for="Ariza">Arıza Açıklaması</label>
                                     <span asp-validation-for="Ariza" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" asp-for="YapilanIslem" style="height: 100px"></textarea>
+                                    <label asp-for="YapilanIslem">Yapılan İşlem</label>
+                                    <span asp-validation-for="YapilanIslem" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>

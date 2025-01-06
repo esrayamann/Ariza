@@ -19,6 +19,7 @@ namespace Ariza.Models
         public string Ariza { get; set; }
         public string Birim { get; set; }
         public string Bolum { get; set; }
+        public string? YapilanIslem { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     }

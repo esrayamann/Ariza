@@ -47,7 +47,6 @@ namespace Ariza.Controllers
                 return BadRequest("Kullanıcı bilgileri eksik.");
             }
 
-            // Yeni kullanıcıyı ekliyoruz
             var newUser = new User
             {
                 Ad = model.Ad,
@@ -58,8 +57,7 @@ namespace Ariza.Controllers
 
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
-
-            // UserRole ekliyoruz
+            
             var userRole = new UserRole
             {
                 UserId = newUser.Id,
@@ -69,27 +67,22 @@ namespace Ariza.Controllers
             _context.UserRoles.Add(userRole);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("UserList");
         }
-        //public async Task<IActionResult> ApplicationList()
-        //{
-        //    var taleps = await _context.GetAllApplicationsAsync();
-        //    return View(taleps);
-        //}
-        ////
-        public async Task<IActionResult> ApplicationList( string searchString)
-        {           
+
+        public async Task<IActionResult> ApplicationList(string searchString, int pageIndex = 1, int pageSize = 10)
+        {
             var taleps = _context.Taleps.AsQueryable();
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 taleps = taleps.Where(t => t.Ad.Contains(searchString) || t.Soyad.Contains(searchString));
             }
 
             taleps = taleps.OrderByDescending(u => u.CreatedDate);
 
-            var sortedTaleps = await taleps.AsNoTracking().ToListAsync();
-            return View(sortedTaleps);
+            var paginatedList = await PaginatedList<Talep>.CreateAsync(taleps.AsNoTracking(), pageIndex, pageSize);
+            return View(paginatedList);
         }
         public async Task<IActionResult> Rapor(DateTime? startDate, DateTime? endDate)
         {

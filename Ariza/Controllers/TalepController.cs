@@ -160,6 +160,7 @@ namespace Ariza.Controllers
             guncelTalep.Ariza = model.Ariza;
             guncelTalep.Birim = model.Birim;
             guncelTalep.Bolum = model.Bolum;
+            guncelTalep.YapilanIslem = model.YapilanIslem;
 
             try
             {
@@ -186,8 +187,7 @@ namespace Ariza.Controllers
             {
                 return Json(new { success = false, message = "Sicil numarası boş olamaz." });
             }
-
-            // Taleps tablosundan sicil numarasına göre veri getir
+            
             var talep = _context.Taleps.SingleOrDefault(t => t.SicilNo == sicilNo);
 
             if (talep == null)
@@ -201,12 +201,12 @@ namespace Ariza.Controllers
                 success = true,
                 data = new
                 {
-                    talep.Ad,
-                    talep.Soyad,
-                    talep.Bolum,
-                    talep.Birim,
-                    talep.TelNo,
-                    talep.Ariza // Eğer arıza açıklamasını da doldurmak istiyorsanız
+                    ad=talep.Ad,
+                    soyad=talep.Soyad,
+                    email = talep.Email,
+                    bolum = talep.Bolum,
+                    birim = talep.Birim,
+                    telNo = talep.TelNo
                 }
             });
         }
