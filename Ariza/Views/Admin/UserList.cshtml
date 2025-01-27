@@ -54,8 +54,7 @@
 @section Scripts {
     <script>
         function changeRole(userId) {
-            // Role değiştirme işlemi için AJAX çağrısı yapılabilir
-            window.location.href = `/Admin/ChangeRole/${userId}`;
+            window.location.href = '@Url.Action("ChangeRole", "Admin")/' + userId;
         }
     </script>
 }

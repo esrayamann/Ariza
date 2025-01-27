@@ -7,7 +7,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/Login/Index"; // Giriþ sayfasý
-                 /*   options.AccessDeniedPath = "/Login/AccessDenied";*/ // Eriþim reddi
+                    options.LogoutPath = "/Login/Logout"; // Çýkýþ sayfasý
+                    options.AccessDeniedPath = "/Login/AccessDenied"; // Yetki yok
+                    //options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Cookie süresi
                 });
 builder.Services.AddDbContext<Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

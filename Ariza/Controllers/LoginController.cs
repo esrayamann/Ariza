@@ -68,5 +68,13 @@ namespace Ariza.Controllers
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(p);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Login");
+        }
     }
 }

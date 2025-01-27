@@ -96,7 +96,6 @@ namespace Ariza.Controllers
             return View(model);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> MyApplications()
         {
@@ -131,27 +130,36 @@ namespace Ariza.Controllers
             if (talep == null)
                 return NotFound();
 
+            // Kullanıcı rolüne göre layout belirle
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            }
+            else
+            {
+                ViewBag.Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+            }
+
             return View(talep);
         }
+
         [HttpPost]
         public async Task<IActionResult> Edit(Talep model)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim != null)
+            if (User.IsInRole("Admin"))
             {
-                ModelState.Remove("User");
+                ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
             }
-
-            if (!ModelState.IsValid)
+            else
             {
-                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                return View(model);
+                ViewBag.Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
             }
 
             var guncelTalep = await _context.Taleps.FindAsync(model.Id);
             if (guncelTalep == null)
                 return NotFound();
 
+            // Güncelleme
             guncelTalep.SicilNo = model.SicilNo;
             guncelTalep.Ad = model.Ad;
             guncelTalep.Soyad = model.Soyad;
@@ -164,19 +172,17 @@ namespace Ariza.Controllers
 
             try
             {
-                //_context.Taleps.Update(guncelTalep);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Başarıyla güncellendi.";
-                //return RedirectToAction("Success");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hata: {ex.Message}");
                 ModelState.AddModelError("", "Talep güncellenemedi. Lütfen tekrar deneyin.");
             }
 
-            return View(model); 
+            return View(model);
         }
+
 
         //
 
@@ -195,7 +201,6 @@ namespace Ariza.Controllers
                 return Json(new { success = false, message = "Bu sicil numarasıyla eşleşen kayıt bulunamadı." });
             }
 
-            // Gerekli bilgileri döndür
             return Json(new
             {
                 success = true,

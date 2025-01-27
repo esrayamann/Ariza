@@ -2,11 +2,26 @@
 @model Ariza.Models.Talep
 
 @{
-    ViewData["Title"] = "Talep Güncelle";
-    Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+    Layout = ViewBag.Layout ?? "~/Views/Shared/_KullaniciLayout.cshtml";
 }
 
 <div class="container mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card shadow-sm">
@@ -15,25 +30,7 @@
                 </div>
                 <div class="card-body">
                     <form asp-action="Edit" method="post">
-                        <!-- Success Message -->
-                        @if (TempData["SuccessMessage"] != null)
-                        {
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                @TempData["SuccessMessage"]
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        }
-
-                        <!-- Error Messages -->
-                        @if (ViewBag.Errors != null)
-                        {
-                            <div class="alert alert-danger">
-                                @foreach (var error in ViewBag.Errors)
-                                {
-                                    <p class="mb-0">@error</p>
-                                }
-                            </div>
-                        }
+                        
 
                         <div class="row g-3">
                             <!-- Read-only Fields -->

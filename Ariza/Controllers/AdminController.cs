@@ -14,7 +14,6 @@ namespace Ariza.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-
         public IActionResult Index()
         {
             return View();
@@ -24,8 +23,8 @@ namespace Ariza.Controllers
         {
             var users = await _context.GetAllUsersAsync();
             return View(users);
-
         }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult CreateUser()
@@ -33,6 +32,7 @@ namespace Ariza.Controllers
             ModelState.Clear();
             return View(new User());
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateUser(User model)
         {
@@ -61,7 +61,7 @@ namespace Ariza.Controllers
             var userRole = new UserRole
             {
                 UserId = newUser.Id,
-                RoleId = 2
+                RoleId = 2 //default olarak user rolü verildi
             };
 
             _context.UserRoles.Add(userRole);
@@ -79,11 +79,12 @@ namespace Ariza.Controllers
                 taleps = taleps.Where(t => t.Ad.Contains(searchString) || t.Soyad.Contains(searchString));
             }
 
-            taleps = taleps.OrderByDescending(u => u.CreatedDate);
+            taleps = taleps.OrderByDescending(u => u.CreatedDate); //tarihe göre sıralama
 
             var paginatedList = await PaginatedList<Talep>.CreateAsync(taleps.AsNoTracking(), pageIndex, pageSize);
             return View(paginatedList);
         }
+
         public async Task<IActionResult> Rapor(DateTime? startDate, DateTime? endDate)
         {
             var taleps = _context.Taleps.AsQueryable();
@@ -102,7 +103,6 @@ namespace Ariza.Controllers
             return View(filteredTaleps);
         }
     }
-
 }
 
 
