@@ -42,7 +42,7 @@
                             <th class="text-center">İşlemler</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody>                      
                         @foreach (var talep in Model)
                         {
                             <tr>
@@ -129,9 +129,6 @@
     </div>
 </div>
 
-@section Scripts {
-    <script src="~/js/print-service.js"></script>
-}
 
 @section Styles {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -159,4 +156,108 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.04);
         }
     </style>
+}
+
+@section Scripts {
+
+    <script>
+        // ✅ Yazdırma fonksiyonunu tek bir yerde tanımla
+        function handlePrint(button) {
+            console.log("🚀 handlePrint Çalıştı!");
+
+            const data = {
+                Ad: button.dataset.ad,
+                Soyad: button.dataset.soyad,
+                TelNo: button.dataset.tel,
+                Email: button.dataset.email,
+                Birim: button.dataset.birim,
+                Ariza: button.dataset.ariza,
+                Tarih: button.dataset.tarih
+            };
+
+            console.log("📄 Yazdırılacak Veri:", data);
+
+            const printWindow = window.open('', '_blank');
+            if (!printWindow || printWindow.closed || typeof printWindow.closed === 'undefined') {
+                alert("❌ Pop-up engelleyici nedeniyle yazdırma penceresi açılamadı. Lütfen pop-up engelleyiciyi kapatın.");
+                return;
+            }
+
+            printWindow.document.write(createPrintTemplate(data));
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 250);
+        }
+
+        // ✅ Sayfa yüklendiğinde butonlara event ekle
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("DOM Yüklendi, print-button event ekleniyor...");
+            document.querySelectorAll('.print-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    console.log("✅ Yazdır butonuna tıklandı!");
+                    handlePrint(button);
+                });
+            });
+        });
+
+        // ✅ Eğer sayfada yeni butonlar yüklenirse, dinamik olarak event ekleyelim
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('print-button')) {
+                console.log("✅ Event delegation ile yazdır butonuna tıklandı!");
+                handlePrint(event.target);
+            }
+        });
+
+        // ✅ Yazdırma şablonu oluştur
+        function createPrintTemplate(data) {
+            return `
+                <html>
+                <head>
+                    <title>Arıza Formu</title>
+                    <link rel="stylesheet" href="/css/print-styles.css">
+                </head>
+                <body>
+                    <div class="print-header">
+                        <h4>SDÜ Bilgi İşlem Daire Başkanlığı Teknik Servis Arıza Formu</h4>
+                    </div>
+                    <div class="teslim-alan">(Teslim Alan: )</div>
+                    <table class="print-table">
+                        <tr>
+                            <td class="print-label">Ad Soyad</td>
+                            <td>${data.Ad} ${data.Soyad}</td>
+                        </tr>
+                        <tr>
+                            <td class="print-label">Telefon / E-mail</td>
+                            <td>${data.TelNo} / ${data.Email}</td>
+                        </tr>
+                        <tr>
+                            <td class="print-label">Birimi</td>
+                            <td>${data.Birim}</td>
+                        </tr>
+                        <tr>
+                            <td class="print-label">Arıza</td>
+                            <td>${data.Ariza}</td>
+                        </tr>
+                        <tr>
+                            <td class="print-label">Açıklama</td>
+                            <td>Yapılan İşlem</td>
+                        </tr>
+                        <tr>
+                            <td class="print-label">Tarih</td>
+                            <td>${data.Tarih}</td>
+                        </tr>
+                        <tr>
+                            <td class="print-label">Teslim Alan</td>
+                            <td style="border-right: none;"></td>
+                            <td style="border-left: none; width: 100px;">İmza</td>
+                        </tr>
+                    </table>
+                </body>
+                </html>
+            `;
+        }
+    </script>
 }

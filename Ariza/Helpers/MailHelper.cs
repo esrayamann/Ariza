@@ -7,14 +7,14 @@ namespace Ariza.Helpers
     {
         public static void SendMail(string to, string subject, string body)
         {
-            var fromAddress = new MailAddress("youremail@example.com", "Ariza Destek");
+            var fromAddress = new MailAddress("youremail@example.com", "Ariza Destek");//
             var toAddress = new MailAddress(to);
-            const string fromPassword = "yourpassword";
+            const string fromPassword = "yourpassword";//
 
             var smtp = new SmtpClient
             {
-                Host = "smtp.example.com", // SMTP sunucunuzun adresini girin
-                Port = 587, // Genellikle kullanılan port
+                Host = "smtp.gmail.com", 
+                Port = 587, 
                 EnableSsl = true,
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
             };
@@ -23,7 +23,7 @@ namespace Ariza.Helpers
             {
                 Subject = subject,
                 Body = body,
-                IsBodyHtml = true // HTML formatında e-posta göndermek için
+                IsBodyHtml = true // HTML formatında e-posta
             })
             {
                 smtp.Send(message);

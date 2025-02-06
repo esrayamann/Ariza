@@ -32,6 +32,7 @@ namespace Ariza
         {
             return await Taleps.ToListAsync();
         }
+
         //public async Task<User> GetUserByIdAsync(int id)
         //{
         //    return await Users.FindAsync(id);

@@ -1,5 +1,5 @@
 ﻿@using Azure.Core
-@model IEnumerable<Ariza.Models.Talep>
+@model PaginatedList<Ariza.Models.Talep>
 @{
     ViewData["Title"] = "Rapor";
     Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
@@ -91,6 +91,41 @@
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Sayfalama" class="mt-3">
+                <ul class="pagination justify-content-center">
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Rapor", new { pageIndex = Model.PageIndex - 1, startDate = ViewData["StartDate"], endDate = ViewData["EndDate"] })">
+                                &laquo; Önceki
+                            </a>
+                        </li>
+                    }
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        if (i == Model.PageIndex)
+                        {
+                            <li class="page-item active"><span class="page-link">@i</span></li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Rapor", new { pageIndex = i, startDate = ViewData["StartDate"], endDate = ViewData["EndDate"] })">
+                                    @i
+                                </a>
+                            </li>
+                        }
+                    }
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Rapor", new { pageIndex = Model.PageIndex + 1, startDate = ViewData["StartDate"], endDate = ViewData["EndDate"] })">
+                                Sonraki &raquo;
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

@@ -35,13 +35,11 @@
                                 <td>@user.Soyad</td>
                                 <td>@user.Email</td>
                                 <td>
-                                    <button class="btn btn-outline-primary btn-sm"
-                                            onclick="changeRole(@user.Id)"
-                                            title="Rol Değiştir">
-                                        <i class="fas fa-user-edit me-1"></i>
-                                        Rol Değiştir
-                                    </button>
+                                    <a href="@Url.Action("ChangeRole", "Admin", new { userId = user.Id })" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-user-edit me-1"></i> Rol Değiştir
+                                    </a>
                                 </td>
+
                             </tr>
                         }
                     </tbody>

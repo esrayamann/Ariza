@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security.Claims;
+using Ariza.Helpers;
 
 namespace Ariza.Controllers
 {
@@ -159,7 +160,8 @@ namespace Ariza.Controllers
             if (guncelTalep == null)
                 return NotFound();
 
-            // Güncelleme
+            string eskiIslem= guncelTalep.YapilanIslem;
+
             guncelTalep.SicilNo = model.SicilNo;
             guncelTalep.Ad = model.Ad;
             guncelTalep.Soyad = model.Soyad;
@@ -174,6 +176,19 @@ namespace Ariza.Controllers
             {
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Başarıyla güncellendi.";
+
+                //Yapılan İşlem değişmişse, e-posta gönder
+                if (eskiIslem != model.YapilanIslem)
+                {
+                    string subject = "SDÜ Bilgi İşlem Daire Başkanlığı Teknik Servisi";
+                    string body = $@"
+                <p>Sayın {guncelTalep.Ad} {guncelTalep.Soyad},</p>
+                <p>Talebinizle ilgili yapılan işlem güncellenmiştir.</p>
+                <p><strong>Yapılan İşlem:</strong> {guncelTalep.YapilanIslem}</p>
+                <p>İyi çalışmalar dileriz.</p>";
+
+                    MailHelper.SendMail(guncelTalep.Email, subject, body);
+                }
             }
             catch (Exception ex)
             {

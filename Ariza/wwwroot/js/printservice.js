@@ -70,8 +70,12 @@ function handlePrint(button) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    console.log("DOM Yüklendi, print-button event ekleniyor...");
     const printButtons = document.querySelectorAll('.print-button');
     printButtons.forEach(button => {
-        button.addEventListener('click', () => handlePrint(button));
+        button.addEventListener('click', () => {
+            console.log("Yazdır butonuna tıklandı!");
+            handlePrint(button);
+        });
     });
 });

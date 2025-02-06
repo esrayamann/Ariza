@@ -18,6 +18,11 @@ builder.Services.AddDbContext<Context>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<Context>();
 
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddConsole();
+    loggingBuilder.AddDebug();
+});
 
 
 var app = builder.Build();
