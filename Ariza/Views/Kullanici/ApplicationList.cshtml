@@ -6,3 +6,15 @@
 }
 
 @await Html.PartialAsync("_TalepListesi", Model)
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("Sayfa yüklendi, yazdırma fonksiyonu aktif.");
+
+        document.querySelectorAll(".print-button").forEach(button => {
+            button.addEventListener("click", function () {
+                console.log("Yazdır butonuna basıldı!");
+                handlePrint(this);
+            });
+        });
+    });
+</script>

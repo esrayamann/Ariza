@@ -79,8 +79,8 @@ namespace Ariza.Controllers
                     _context.Taleps.Add(model);
                     await _context.SaveChangesAsync();
 
-                    TempData["SuccessMessage"] = "Talebiniz başarıyla alınmıştır.";
-                    return RedirectToAction("MyApplications");
+                    ViewBag.SuccessMessage = "Talebiniz başarıyla alınmıştır.";
+
                 }
                 catch (Exception ex)
                 {
@@ -208,8 +208,11 @@ namespace Ariza.Controllers
             {
                 return Json(new { success = false, message = "Sicil numarası boş olamaz." });
             }
-            
-            var talep = _context.Taleps.SingleOrDefault(t => t.SicilNo == sicilNo);
+
+            var talep = _context.Taleps
+                .Where(t => t.SicilNo == sicilNo)
+                .OrderByDescending(t => t.CreatedDate) //En yeni kaydı aldık
+                .FirstOrDefault();
 
             if (talep == null)
             {

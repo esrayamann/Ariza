@@ -38,6 +38,12 @@
                                     <a href="@Url.Action("ChangeRole", "Admin", new { userId = user.Id })" class="btn btn-outline-primary btn-sm">
                                         <i class="fas fa-user-edit me-1"></i> Rol Değiştir
                                     </a>
+                                    <form asp-action="DeleteUser" asp-controller="Admin" method="post" style="display:inline;">
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?');">
+                                            <i class="fas fa-trash-alt me-1"></i> Sil
+                                        </button>
+                                    </form>
                                 </td>
 
                             </tr>

@@ -230,5 +230,19 @@ namespace Ariza.Controllers
 
             return RedirectToAction("UserList");
         }
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync(); // Cascade Delete aktifse, UserRole kayıtları da silinir
+
+            return RedirectToAction("UserList");
+        }
+
     }
 }

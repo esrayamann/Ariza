@@ -1,12 +1,18 @@
 ﻿@model Ariza.Models.Talep
-
 @{
     ViewData["Title"] = "Talep Oluştur";
     Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
 }
 
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div class="alert alert-success">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
 <div class="container py-4">
-    <h2 class="mb-4">Talep Oluştur</h2>
+    <h2 class="mb-4">Yeni Servis Kayıt</h2>
 
     <form asp-action="Create" method="post">
         <div class="card shadow-sm">
@@ -22,7 +28,7 @@
                 <div class="row mb-3">
                     <label for="Ad" class="col-sm-3 col-form-label">Ad</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" asp-for="Ad" id="Ad" readonly />
+                        <input type="text" class="form-control" asp-for="Ad" id="Ad" />
                         <span asp-validation-for="Ad" class="text-danger"></span>
                     </div>
                 </div>
@@ -30,7 +36,7 @@
                 <div class="row mb-3">
                     <label for="Soyad" class="col-sm-3 col-form-label">Soyad</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" asp-for="Soyad" id="Soyad" readonly />
+                        <input type="text" class="form-control" asp-for="Soyad" id="Soyad"/>
                         <span asp-validation-for="Soyad" class="text-danger"></span>
                     </div>
                 </div>
@@ -52,17 +58,7 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="Ariza" class="col-sm-3 col-form-label">Arıza Açıklaması</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control" asp-for="Ariza" id="Ariza" rows="3"></textarea>
-                        <span asp-validation-for="Ariza" class="text-danger"></span>
-                    </div>
-                </div>
-
-               
-
-                <div class="row mb-3">
-                    <label for="TelNo" class="col-sm-3 col-form-label">Telefon Numarası</label>
+                    <label for="TelNo" class="col-sm-3 col-form-label">Telefon</label>
                     <div class="col-sm-9">
                         <input type="tel" class="form-control" asp-for="TelNo" id="TelNo" />
                         <span asp-validation-for="TelNo" class="text-danger"></span>
@@ -72,10 +68,28 @@
                 <div class="row mb-3">
                     <label for="Email" class="col-sm-3 col-form-label">Email</label>
                     <div class="col-sm-9">
-                        <input type="email" class="form-control" asp-for="Email" readonly />
+                        <input type="email" class="form-control" asp-for="Email"/>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                 </div>
+
+                <div class="row mb-3">
+                    <label for="Ariza" class="col-sm-3 col-form-label">Arıza Açıklaması</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" asp-for="Ariza" id="Ariza" rows="3"></textarea>
+                        <span asp-validation-for="Ariza" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="YapilanIslem" class="col-sm-3 col-form-label">Yapılan İşlem</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" asp-for="YapilanIslem" id="YapilanIslem" rows="3"></textarea>
+                        <span asp-validation-for="YapilanIslem" class="text-danger"></span>
+                    </div>
+                </div>
+               
+
+                
             </div>
         </div>
 

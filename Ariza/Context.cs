@@ -23,6 +23,17 @@ namespace Ariza
                 .WithMany(u => u.Taleps)
                 .HasForeignKey(a => a.UserId);
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserRole>()
+       .HasOne(ur => ur.User)
+       .WithMany(u => u.UserRoles)
+       .HasForeignKey(ur => ur.UserId)
+       .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserRole>()
+       .HasOne(ur => ur.Role)
+       .WithMany(r => r.UserRoles)
+       .HasForeignKey(ur => ur.RoleId);
         }
         public async Task<List<User>> GetAllUsersAsync()
         {
