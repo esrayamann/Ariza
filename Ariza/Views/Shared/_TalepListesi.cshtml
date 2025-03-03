@@ -78,13 +78,13 @@
                                                 data-birim="@talep.Birim"
                                                 data-ariza="@talep.Ariza"
                                                 data-tarih="@talep.CreatedDate.ToString("dd.MM.yyyy HH:mm")"
-                                                data-tooltip="Yazdır">
+                                                data-bs-toggle="tooltip" data-bs-placement="right" title="Yazdır">
 
                                             <i class="bi bi-printer" ></i>
                                         </button>
                                         <a href="@Url.Action("Edit", "Talep", new { id = talep.Id })"
-                                           class="btn btn-sm btn-outline-primary" data-tooltip="Detay">
-                                            <i class="bi bi-pencil-square"></i>
+                                           class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Detay">
+                                            <i class="bi bi-pencil-square" ></i>
                                         </a>
                                     </div>
                                 </td>
