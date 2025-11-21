@@ -1,0 +1,139 @@
+﻿
+@model Ariza.Models.Talep
+
+@{
+    Layout = ViewBag.Layout ?? "~/Views/Shared/_KullaniciLayout.cshtml";
+}
+
+<div class="container mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Teknik Servis Formu</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        
+
+                        <div class="row g-3">
+                            <!-- Read-only Fields -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="Ad" readonly />
+                                    <label asp-for="Ad">Ad</label>
+                                    <span asp-validation-for="Ad" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="Soyad" readonly />
+                                    <label asp-for="Soyad">Soyad</label>
+                                    <span asp-validation-for="Soyad" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Editable Fields -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="SicilNo" />
+                                    <label asp-for="SicilNo">Sicil Numarası</label>
+                                    <span asp-validation-for="SicilNo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="tel" class="form-control" asp-for="TelNo" />
+                                    <label asp-for="TelNo">Telefon Numarası</label>
+                                    <span asp-validation-for="TelNo" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="Bolum" />
+                                    <label asp-for="Bolum">Fakülte</label>
+                                    <span asp-validation-for="Bolum" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="Birim" />
+                                    <label asp-for="Birim">Birim</label>
+                                    <span asp-validation-for="Birim" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" asp-for="Email" readonly />
+                                    <label asp-for="Email">Email</label>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" asp-for="Ariza" style="height: 100px"></textarea>
+                                    <label asp-for="Ariza">Arıza Açıklaması</label>
+                                    <span asp-validation-for="Ariza" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" asp-for="YapilanIslem" style="height: 100px"></textarea>
+                                    <label asp-for="YapilanIslem">Yapılan İşlem</label>
+                                    <span asp-validation-for="YapilanIslem" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-2"></i>Güncelle
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .form-floating > label {
+            padding-left: 1rem;
+        }
+
+        .card {
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        .card-header {
+            border-radius: 0.5rem 0.5rem 0 0 !important;
+        }
+
+        .btn-primary {
+            padding: 0.5rem 2rem;
+        }
+    </style>
+}

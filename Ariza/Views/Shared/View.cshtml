@@ -1,0 +1,49 @@
+﻿@* 
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+}
+
+<h1>View</h1>
+
+ *@
+ @model Ariza.Models.Talep
+
+<div class="print-only">
+    <div class="print-header">
+        <h4 class="text-center mb-3">SDÜ Bilgi İşlem Daire Başkanlığı Teknik Servis Arıza Formu</h4>
+        <div class="text-end mb-2">(Teslim Alan: )</div>
+    </div>
+
+    <table class="print-table">
+        <tr>
+            <td class="print-label">Ad Soyad</td>
+            <td class="print-value">@Model.Ad @Model.Soyad</td>
+        </tr>
+        <tr>
+            <td class="print-label">Telefon / E-mail</td>
+            <td class="print-value">@Model.TelNo / @Model.Email</td>
+        </tr>
+        <tr>
+            <td class="print-label">Birimi</td>
+            <td class="print-value">@Model.Birim</td>
+        </tr>
+        <tr>
+            <td class="print-label">Arıza</td>
+            <td class="print-value">@Model.Ariza</td>
+        </tr>
+        <tr>
+            <td class="print-label">Açıklama</td>
+            <td class="print-value">Yapılan İşlem</td>
+        </tr>
+        <tr>
+            <td class="print-label">Tarih</td>
+            <td class="print-value">@Model.CreatedDate.ToString("dd.MM.yyyy")</td>
+        </tr>
+        <tr>
+            <td class="print-label">Teslim Alan</td>
+            <td class="print-value"></td>
+            <td class="print-label">İmza</td>
+        </tr>
+    </table>
+</div>

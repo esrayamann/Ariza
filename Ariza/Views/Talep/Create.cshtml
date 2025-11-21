@@ -1,21 +1,161 @@
-﻿@model Ariza.Models.BasvuruViewModel
+﻿@model Ariza.Models.Talep
+@{
+    ViewData["Title"] = "Talep Oluştur";
+    Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+}
 
-<h2>Başvuru Oluştur</h2>
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div class="alert alert-success">
+        @ViewBag.SuccessMessage
+    </div>
+}
 
-<form asp-action="Create" method="post">
-    <div>
-        <label for="Ariza">Arıza nedir</label>
-        <input type="text" asp-for="Ariza" />
-        <span asp-validation-for="Ariza"></span>
-    </div>
-    <div>
-        <label for="Bolum">Bölüm</label>
-        <input type="text" asp-for="Bolum" />
-        <span asp-validation-for="Bolum"></span>
-    </div>
-    <div class="agile-profile">
-        <p>Birim</p>
-        <input type="text" name="Birim" placeholder="Birim" required="">
-    </div>
-    <button type="submit">Gönder</button>
-</form>
+<div class="container py-4">
+    <h2 class="mb-4">Yeni Servis Kayıt</h2>
+
+    <form asp-action="Create" method="post">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <label for="SicilNo" class="col-sm-3 col-form-label">Sicil Numarası</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" asp-for="SicilNo" id="SicilNo" />
+                        <span asp-validation-for="SicilNo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="Ad" class="col-sm-3 col-form-label">Ad</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" asp-for="Ad" id="Ad" />
+                        <span asp-validation-for="Ad" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="Soyad" class="col-sm-3 col-form-label">Soyad</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" asp-for="Soyad" id="Soyad"/>
+                        <span asp-validation-for="Soyad" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="Bolum" class="col-sm-3 col-form-label">Fakülte</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" asp-for="Bolum" id="Bolum" />
+                        <span asp-validation-for="Bolum" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="Birim" class="col-sm-3 col-form-label">Birim</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" asp-for="Birim" id="Birim" />
+                        <span asp-validation-for="Birim" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="TelNo" class="col-sm-3 col-form-label">Telefon</label>
+                    <div class="col-sm-9">
+                        <input type="tel" class="form-control" asp-for="TelNo" id="TelNo" />
+                        <span asp-validation-for="TelNo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="Email" class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                        <input type="email" class="form-control" asp-for="Email"/>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="Ariza" class="col-sm-3 col-form-label">Arıza Açıklaması</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" asp-for="Ariza" id="Ariza" rows="3"></textarea>
+                        <span asp-validation-for="Ariza" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="YapilanIslem" class="col-sm-3 col-form-label">Yapılan İşlem</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" asp-for="YapilanIslem" id="YapilanIslem" rows="3"></textarea>
+                        <span asp-validation-for="YapilanIslem" class="text-danger"></span>
+                    </div>
+                </div>
+               
+
+                
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-save me-2"></i>Kaydet
+            </button>
+        </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success d-flex align-items-center mt-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <div>
+                    Talep Başarıyla Oluşturuldu.
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.Errors != null)
+        {
+            <div class="alert alert-danger mt-4">
+                @foreach (var error in ViewBag.Errors)
+                {
+                    <p class="mb-0">@error</p>
+                }
+            </div>
+        }
+    </form>
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#SicilNo').on('change', function () {
+                var sicilNo = $(this).val();
+
+                if (sicilNo) {
+                    $.ajax({
+                        url: '@Url.Action("GetTalepInfo", "Talep")',
+                        type: 'GET',
+                        data: { sicilNo: sicilNo },
+                        success: function (response) {
+                            if (response.success) {
+                                 if ($('#Ad').val() !== response.data.ad) {
+                                    $('#Ad').val(response.data.ad);
+                                }
+                                if ($('#Soyad').val() !== response.data.soyad) {
+                                    $('#Soyad').val(response.data.soyad);
+                                }
+                                if ($('#Email').val() !== response.data.email) {
+                                    $('#Email').val(response.data.email);
+                                }
+                                $('#Bolum').val(response.data.bolum);
+                                $('#Birim').val(response.data.birim);
+                                $('#TelNo').val(response.data.telNo);
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function () {
+                            alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

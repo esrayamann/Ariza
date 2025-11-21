@@ -2,12 +2,16 @@
 
 namespace Ariza.Models
 {
-    public class BasvuruViewModel
+    public class TalepViewModel
     {
-        [Required(ErrorMessage = "Başvuru nedeni gereklidir.")]
         public string Ariza { get; set; }
 
-        [Required(ErrorMessage = "Adres bilgisi gereklidir.")]
         public string Bolum { get; set; }
+
+        public string Birim { get; set; }
+
+        public int TelNo { get; set; }
+
+        public string Email { get; set; }
     }
 }

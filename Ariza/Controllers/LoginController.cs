@@ -34,8 +34,8 @@ namespace Ariza.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Email)
-                    //new Claim(ClaimTypes.Email, p.Email)
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.GivenName, user.Ad + " " + user.Soyad)//
                 };
 
                 foreach (var role in user.UserRoles.Select(ur => ur.Role.Rol))
@@ -49,15 +49,15 @@ namespace Ariza.Controllers
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
 
-                await HttpContext.SignInAsync("CookieAuthentication", claimsPrincipal);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
                 if (user.UserRoles.Any(ur => ur.RoleId == 1))
                 {
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("ApplicationList", "Admin");
                 }
                 else if (user.UserRoles.Any(ur => ur.RoleId == 2))
                 {
-                    return RedirectToAction("Index", "Kullanici");
+                    return RedirectToAction("ApplicationList", "Kullanici");
                 }
                 else
                 {
@@ -67,6 +67,14 @@ namespace Ariza.Controllers
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(p);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Login");
         }
     }
 }

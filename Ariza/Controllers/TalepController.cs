@@ -1,7 +1,9 @@
 ﻿using Ariza.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Security.Claims;
+using Ariza.Helpers;
 
 namespace Ariza.Controllers
 {
@@ -21,41 +23,75 @@ namespace Ariza.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(BasvuruViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+           var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
-                if (userIdClaim == null)
-                {
-                    ModelState.AddModelError("", "Giriş yapmanız gerekiyor.");
-                    return RedirectToAction("Index", "Login");
-                }
+           if (userIdClaim == null)
+               return RedirectToAction("Index", "Login");
 
-                if (int.TryParse(userIdClaim.Value, out int userId))
-                {
-                    var talep = new Talep
+           if (int.TryParse(userIdClaim.Value, out int userId))
+           {
+               var user = _context.Users.SingleOrDefault(u => u.Id == userId);
+               if (user != null)
+               {
+                    var model = new Talep
                     {
-                        UserId = userId,
-                        Ariza = model.Ariza,
-                        Bolum = model.Bolum
+                        Ad = user.Ad,
+                        Soyad = user.Soyad,
+                        Email = user.Email,
                     };
 
-                    // Context ile başvuru ekleme
-                    _context.Taleps.Add(talep);
+                   return View(model);
+               }
+           }
+
+           return RedirectToAction("Index", "Login");
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Talep model)
+        {
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            model.UserId = Convert.ToInt32(userIdClaim.Value);
+            var user = _context.Users.SingleOrDefault(u => u.Id == model.UserId);
+
+            if(userIdClaim != null && user != null)
+                ModelState.Remove("User");
+
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                 return View(model);
+            }
+
+
+            if (userIdClaim == null)
+                return RedirectToAction("Index", "Login");
+            
+
+            if (int.TryParse(userIdClaim.Value, out int userId))
+            {
+
+                model.UserId = userId;
+                try
+                {
+                    _context.Taleps.Add(model);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction("Success");
+                    ViewBag.SuccessMessage = "Talebiniz başarıyla alınmıştır.";
+
                 }
-                else
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Geçersiz kullanıcı kimliği.");
+                    Console.WriteLine($"Hata: {ex.Message}");
+                    ModelState.AddModelError("", "Talebiniz kaydedilemedi. Lütfen tekrar deneyin.");
                 }
+               
+            }
+            else
+            {
+                ModelState.AddModelError("", "Geçersiz kullanıcı kimliği.");
             }
 
             return View(model);
@@ -86,5 +122,117 @@ namespace Ariza.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var talep = _context.Taleps.SingleOrDefault(t => t.Id == id);
+
+            if (talep == null)
+                return NotFound();
+
+            // Kullanıcı rolüne göre layout belirle
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            }
+            else
+            {
+                ViewBag.Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+            }
+
+            return View(talep);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Talep model)
+        {
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            }
+            else
+            {
+                ViewBag.Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+            }
+
+            var guncelTalep = await _context.Taleps.FindAsync(model.Id);
+            if (guncelTalep == null)
+                return NotFound();
+
+            string eskiIslem= guncelTalep.YapilanIslem;
+
+            guncelTalep.SicilNo = model.SicilNo;
+            guncelTalep.Ad = model.Ad;
+            guncelTalep.Soyad = model.Soyad;
+            guncelTalep.TelNo = model.TelNo;
+            guncelTalep.Email = model.Email;
+            guncelTalep.Ariza = model.Ariza;
+            guncelTalep.Birim = model.Birim;
+            guncelTalep.Bolum = model.Bolum;
+            guncelTalep.YapilanIslem = model.YapilanIslem;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Başarıyla güncellendi.";
+
+                //Yapılan İşlem değişmişse, e-posta gönder
+                if (eskiIslem != model.YapilanIslem)
+                {
+                    string subject = "SDÜ Bilgi İşlem Daire Başkanlığı Teknik Servisi";
+                    string body = $@"
+                <p>Sayın {guncelTalep.Ad} {guncelTalep.Soyad},</p>
+                <p>Talebinizle ilgili yapılan işlem güncellenmiştir.</p>
+                <p><strong>Yapılan İşlem:</strong> {guncelTalep.YapilanIslem}</p>
+                <p>İyi çalışmalar dileriz.</p>";
+
+                    MailHelper.SendMail(guncelTalep.Email, subject, body);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Talep güncellenemedi. Lütfen tekrar deneyin.");
+            }
+
+            return View(model);
+        }
+
+
+        //
+
+        [HttpGet]
+        public IActionResult GetTalepInfo(string sicilNo)
+        {
+            if (string.IsNullOrEmpty(sicilNo))
+            {
+                return Json(new { success = false, message = "Sicil numarası boş olamaz." });
+            }
+
+            var talep = _context.Taleps
+                .Where(t => t.SicilNo == sicilNo)
+                .OrderByDescending(t => t.CreatedDate) //En yeni kaydı aldık
+                .FirstOrDefault();
+
+            if (talep == null)
+            {
+                return Json(new { success = false, message = "Bu sicil numarasıyla eşleşen kayıt bulunamadı." });
+            }
+
+            return Json(new
+            {
+                success = true,
+                data = new
+                {
+                    ad=talep.Ad,
+                    soyad=talep.Soyad,
+                    email = talep.Email,
+                    bolum = talep.Bolum,
+                    birim = talep.Birim,
+                    telNo = talep.TelNo
+                }
+            });
+        }
+
     }
 }

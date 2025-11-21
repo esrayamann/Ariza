@@ -1,0 +1,267 @@
+﻿@model PaginatedList<Talep>
+
+
+<div class="container mt-4">
+
+    <!-- Search Form -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="get" class="input-group shadow-sm">
+                <input type="text"
+                       class="form-control"
+                       name="searchString"
+                       placeholder="İsim Soyisim Ara"
+                       value="@Context.Request.Query["searchString"]">
+                <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-search me-2"></i>Ara
+                </button>
+            </form>
+        </div>
+        @* <div class="col">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="@Url.Action("Create", "Talep")" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-2"></i>Yeni kayıt
+                </a>
+            </div>
+        </div> *@
+    </div>
+
+    <!-- Table -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Ad Soyad</th>
+                            <th>İletişim</th>
+                            <th>Birim</th>
+                            <th>Arıza</th>
+                            <th>Tarih</th>
+                            <th class="text-center">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>                      
+                        @foreach (var talep in Model)
+                        {
+                            <tr>
+                                <td>@talep.Ad @talep.Soyad</td>
+                                <td>
+                                    <div class="d-flex flex-column gap-1">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-telephone me-2 text-muted"></i>
+                                            <span>@talep.TelNo</span>
+                                        </div>
+                                        <div class="d-flex align-items-center text-muted">
+                                            <i class="bi bi-envelope me-2"></i>
+                                            <span>@talep.Email</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@talep.Birim</td>
+                                <td>
+                                    <div class="text-truncate" style="max-width: 200px;" title="@talep.Ariza">
+                                        @talep.Ariza
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>@talep.CreatedDate.ToString("dd.MM.yyyy")</div>
+                                    <small class="text-muted">@talep.CreatedDate.ToString("HH:mm")</small>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary print-button"
+                                                data-ad="@talep.Ad"
+                                                data-soyad="@talep.Soyad"
+                                                data-tel="@talep.TelNo"
+                                                data-email="@talep.Email"
+                                                data-birim="@talep.Birim"
+                                                data-ariza="@talep.Ariza"
+                                                data-tarih="@talep.CreatedDate.ToString("dd.MM.yyyy HH:mm")"
+                                                data-bs-toggle="tooltip" data-bs-placement="right" title="Yazdır">
+
+                                            <i class="bi bi-printer" ></i>
+                                        </button>
+                                        <a href="@Url.Action("Edit", "Talep", new { id = talep.Id })"
+                                           class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Detay">
+                                            <i class="bi bi-pencil-square" ></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <nav aria-label="Sayfalama">
+                <ul class="pagination justify-content-center">
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("ApplicationList", new { pageIndex = Model.PageIndex - 1, searchString = ViewData["searchString"] })">
+                                &laquo; Önceki
+                            </a>
+                        </li>
+                    }
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        if (i == Model.PageIndex)
+                        {
+                            <li class="page-item active"><span class="page-link">@i</span></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.Action("ApplicationList", new { pageIndex = i, searchString = ViewData["searchString"] })">@i</a></li>
+                        }
+                    }
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("ApplicationList", new { pageIndex = Model.PageIndex + 1, searchString = ViewData["searchString"] })">
+                                Sonraki &raquo;
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/print-styles.css">
+    <style>
+        .table > :not(caption) > * > * {
+            padding: 1rem 0.75rem;
+        }
+
+        .pagination > li > a, .pagination > li > span {
+            padding: 0.5rem 0.75rem;
+        }
+
+        .card {
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        .btn-group .btn {
+            padding: 0.375rem 0.5rem;
+        }
+
+        .input-group {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+            .tooltip::after {
+                content: attr(data-tooltip); /* data-tooltip özelliğindeki metni al */
+                position: absolute;
+                bottom: 125%; /* Butonun üstüne yerleştir */
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: rgba(0, 0, 0, 0.7);
+                color: #fff;
+                padding: 5px 10px;
+                border-radius: 5px;
+                visibility: hidden;
+                opacity: 0;
+                transition: opacity 0.3s;
+                white-space: nowrap; /* Tooltip metninin tek satırda olmasını sağlar */
+            }
+
+            .tooltip:hover::after {
+                visibility: visible;
+                opacity: 1;
+            }
+
+    </style>
+}
+
+@section Scripts {
+
+    <script>
+        window.handlePrint = function (button) {
+            console.log("Yazdır butonuna basıldı!");
+
+            const ad = button.getAttribute('data-ad');
+            const soyad = button.getAttribute('data-soyad');
+            const tel = button.getAttribute('data-tel');
+            const email = button.getAttribute('data-email');
+            const birim = button.getAttribute('data-birim');
+            const ariza = button.getAttribute('data-ariza');
+            const tarih = button.getAttribute('data-tarih');
+
+            const printContent = `
+                <div class="print-container">
+                    <h1>Talep Detayı</h1>
+                    <table class="print-table">
+                        <tr><th>Ad Soyad:</th><td>${ad} ${soyad}</td></tr>
+                        <tr><th>İletişim:</th><td><div>Telefon: ${tel}</div><div>Email: ${email}</div></td></tr>
+                        <tr><th>Birim:</th><td>${birim}</td></tr>
+                        <tr><th>Arıza:</th><td>${ariza}</td></tr>
+                        <tr><th>Tarih:</th><td>${tarih}</td></tr>
+                    </table>
+                </div>
+            `;
+
+                    try {
+            const printWindow = window.open('', '_blank');
+                   if (!printWindow || printWindow.closed || typeof printWindow.closed === "undefined") {
+                    alert("Pop-up engelleyicisini devre dışı bırakın ve tekrar deneyin.");
+                    return;
+                }
+            printWindow.document.write(`
+                            <html>
+                    <head>
+                        <title>Talep Yazdır</title>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+                        <style>
+                            .print-container {
+                                font-family: Arial, sans-serif;
+                                padding: 20px;
+                                width: 80%;
+                                margin: auto;
+                            }
+                            .print-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                            }
+                            .print-table th, .print-table td {
+                                border: 1px solid black;
+                                padding: 8px;
+                                text-align: left;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        ${printContent}
+                        <script>
+                            window.onload = function() {
+                                setTimeout(() => {
+                                    window.print();
+                                    window.close();
+                                }, 500);
+                            };
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+            `);
+    printWindow.document.close();
+    } catch (error) {
+    console.error("Yazdırma hatası:", error);
+}
+
+
+      
+    </script>
+}
