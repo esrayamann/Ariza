@@ -4,6 +4,7 @@
 
 [![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-MVC-512BD4)](https://learn.microsoft.com/aspnet/core/)
+[![Build](https://github.com/esrayamann/Ariza/actions/workflows/dotnet.yml/badge.svg)](https://github.com/esrayamann/Ariza/actions/workflows/dotnet.yml)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## Özellikler
