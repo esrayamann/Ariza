@@ -1,17 +1,13 @@
 ﻿@{
-    Layout = null;
+    ViewData["Title"] = "Talep Alındı";
 }
 
-<!DOCTYPE html>
-<h1>Talebiniz başarıyla alınmıştır.</h1>
-<h2>Süreci taleplerim sayfasından takip edebilirsiniz. </h2>
-<a href="@Url.Action("Index", "Kullanici")">Ana sayfaya dön</a>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Success</title>
-</head>
-<body>
-</body>
-</html>
+<div class="card border-0 shadow-sm text-center p-5 mx-auto success-card">
+    <div class="success-icon mb-3">✓</div>
+    <h1 class="h2">Talebiniz alındı</h1>
+    <p class="text-secondary">Süreci taleplerim sayfasından takip edebilirsiniz.</p>
+    <div class="d-flex justify-content-center gap-2 mt-3">
+        <a asp-action="MyApplications" class="btn btn-primary">Taleplerime git</a>
+        <a asp-action="Create" class="btn btn-outline-secondary">Yeni talep oluştur</a>
+    </div>
+</div>

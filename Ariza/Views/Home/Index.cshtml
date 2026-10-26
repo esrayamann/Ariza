@@ -1,8 +1,39 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Teknik Destek";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero card border-0 shadow-sm overflow-hidden">
+    <div class="card-body p-4 p-md-5">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <p class="eyebrow mb-3">TEKNİK DESTEK PORTALI</p>
+                <h1 class="display-5 fw-bold">Arıza taleplerinizi tek noktadan yönetin.</h1>
+                <p class="lead text-secondary mt-3">Kullanıcılar hızlıca kayıt oluşturur; ekipler de talepleri güvenli, izlenebilir bir akışta takip eder.</p>
+                <div class="d-flex flex-wrap gap-2 mt-4">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a class="btn btn-primary btn-lg" asp-controller="Talep" asp-action="Create">Yeni talep oluştur</a>
+                    <a class="btn btn-outline-dark btn-lg" asp-controller="Talep" asp-action="MyApplications">Taleplerime git</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary btn-lg" asp-controller="Login" asp-action="Index">Portala giriş yap</a>
+                }
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="hero-stat p-4 rounded-4">
+                    <p class="mb-1 text-uppercase small fw-semibold">Tek akış</p>
+                    <p class="h3 mb-2">Oluştur · Takip et · Çöz</p>
+                    <p class="mb-0 text-secondary">Daha net iletişim, daha az kayıp talep.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mt-1">
+    <div class="col-md-4"><div class="feature-card h-100 p-4"><h2 class="h5">Hızlı kayıt</h2><p class="text-secondary mb-0">Birim, bölüm ve arıza açıklamasını birkaç adımda iletin.</p></div></div>
+    <div class="col-md-4"><div class="feature-card h-100 p-4"><h2 class="h5">Görünür durum</h2><p class="text-secondary mb-0">Kendi taleplerinizi tarih ve durum bilgisiyle takip edin.</p></div></div>
+    <div class="col-md-4"><div class="feature-card h-100 p-4"><h2 class="h5">Rol bazlı erişim</h2><p class="text-secondary mb-0">Yönetim paneli yalnızca yetkili kullanıcılar için görünür.</p></div></div>
+</section>

@@ -1,10 +1,12 @@
 ﻿using Ariza.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Ariza.Controllers
 {
+    [Authorize]
     public class TalepController : Controller
     {
         private readonly Context _context;
@@ -16,7 +18,7 @@ namespace Ariza.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction(nameof(MyApplications));
         }
         [HttpGet]
         public IActionResult Create()
@@ -25,40 +27,46 @@ namespace Ariza.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BasvuruViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-                if (userIdClaim == null)
-                {
-                    ModelState.AddModelError("", "Giriş yapmanız gerekiyor.");
-                    return RedirectToAction("Index", "Login");
-                }
-
-                if (int.TryParse(userIdClaim.Value, out int userId))
-                {
-                    var talep = new Talep
-                    {
-                        UserId = userId,
-                        Ariza = model.Ariza,
-                        Bolum = model.Bolum
-                    };
-
-                    // Context ile başvuru ekleme
-                    _context.Taleps.Add(talep);
-                    await _context.SaveChangesAsync();
-
-                    return RedirectToAction("Success");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Geçersiz kullanıcı kimliği.");
-                }
+                return View(model);
             }
 
-            return View(model);
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdClaim?.Value, out var userId))
+            {
+                return Challenge();
+            }
+
+            var requester = await _context.Users
+                .AsNoTracking()
+                .SingleOrDefaultAsync(user => user.Id == userId);
+            if (requester is null)
+            {
+                return Challenge();
+            }
+
+            var talep = new Talep
+            {
+                UserId = userId,
+                Ad = requester.Ad,
+                Soyad = requester.Soyad,
+                Email = requester.Email,
+                Ilgilenen = "Atanmadı",
+                Ariza = model.Ariza.Trim(),
+                Birim = model.Birim.Trim(),
+                Bolum = model.Bolum.Trim(),
+                Durum = TalepDurumlari.Yeni,
+                CreatedDate = DateTime.UtcNow
+            };
+
+            _context.Taleps.Add(talep);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Success));
         }
 
         [HttpGet]
@@ -66,20 +74,18 @@ namespace Ariza.Controllers
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (userIdClaim == null)
-                return RedirectToAction("Index", "Login");
-
-            if (int.TryParse(userIdClaim.Value, out int userId))
+            if (int.TryParse(userIdClaim?.Value, out int userId))
             {
-                // Context ile başvuruları getirme
                 var basvurular = await _context.Taleps
+                    .AsNoTracking()
                     .Where(b => b.UserId == userId)
+                    .OrderByDescending(b => b.CreatedDate)
                     .ToListAsync();
 
                 return View(basvurular);
             }
 
-            return RedirectToAction("Index", "Login");
+            return Challenge();
         }
 
         public IActionResult Success()

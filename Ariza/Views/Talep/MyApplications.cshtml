@@ -1,25 +1,51 @@
 ﻿@model List<Ariza.Models.Talep>
 
-<h2>Başvurularım</h2>
+@{
+    ViewData["Title"] = "Taleplerim";
+}
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Başvuru Nedeni</th>
-            <th>Bölüm</th>
-            <th>Oluşturulma Tarihi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var talep in Model)
-        {
-            <tr>
-                <td>@talep.Id</td>
-                <td>@talep.Ariza</td>
-                <td>@talep.Bolum</td>
-                <td>@talep.CreatedDate</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+        <p class="eyebrow mb-2">TEKNİK DESTEK</p>
+        <h1 class="h2 mb-1">Taleplerim</h1>
+        <p class="text-secondary mb-0">Gönderdiğiniz arıza kayıtlarını ve güncel durumlarını takip edin.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">+ Yeni talep</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Arıza</th>
+                    <th>Birim / Bölüm</th>
+                    <th>Durum</th>
+                    <th>Oluşturulma</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-secondary py-5">Henüz oluşturulmuş bir talebiniz yok.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var talep in Model)
+                {
+                    <tr>
+                        <td>@talep.Id</td>
+                        <td class="request-description">@talep.Ariza</td>
+                        <td>@talep.Birim / @talep.Bolum</td>
+                        <td><span class="badge text-bg-secondary">@talep.Durum</span></td>
+                        <td>@talep.CreatedDate.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

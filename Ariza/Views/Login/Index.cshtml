@@ -1,6 +1,7 @@
 ﻿
+@model Ariza.Models.LoginViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Giriş Yap";
 }
 @{
 	Layout = null;
@@ -9,7 +10,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
 	<title>Giriş Yap</title>
 	<!-- metatags-->
@@ -33,14 +34,18 @@
 			<h1><span class="image"></span><label>T</label>eknik <label>S</label>ervis <label>A</label>rıza <label>T</label>alep <label>F</label>ormu</h1>
 		</div>
 		<div class="agile-form">
-			<form method="post">
+			<form asp-action="Index" method="post">
+				@Html.AntiForgeryToken()
+				<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 				<div class="agile-email">
-					<p>email-adres</p>
-					<input type="email" class="email" name="Email" placeholder="email-adres" required="">
+					<p>E-posta adresi</p>
+					<input asp-for="Email" type="email" class="email" placeholder="ornek@kurum.com" autocomplete="email">
+					<span asp-validation-for="Email" class="text-danger"></span>
 				</div>
 				<div class="agile-password">
 					<p>Şifre</p>
-					<input type="password" class="password" name="Sifre" placeholder="şifre" required="">
+					<input asp-for="Password" class="password" placeholder="Şifreniz" autocomplete="current-password">
+					<span asp-validation-for="Password" class="text-danger"></span>
 				</div>
 				<div class="agile-submit">
 					<input type="submit" value="Giriş Yap">

@@ -13,6 +13,19 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+# Local configuration and secrets
+appsettings.Local.json
+appsettings.*.Local.json
+.env
+.env.*
+secrets.json
+DataProtection-Keys/
+
+# Local database files
+*.db
+*.db-shm
+*.db-wal
+
 # Mono auto generated files
 mono_crash.*
 

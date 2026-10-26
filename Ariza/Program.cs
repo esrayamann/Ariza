@@ -1,15 +1,53 @@
 using Ariza;
+using Ariza.Data;
+using Ariza.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<Context>();
-//builder.Services.AddDbContext<Context>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        "ConnectionStrings__DefaultConnection must be configured through user secrets or the deployment environment.");
+}
+
+builder.Services.AddDbContext<Context>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login";
+        options.AccessDeniedPath = "/Login";
+        options.Cookie.Name = "Ariza.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+        options.SlidingExpiration = true;
+    });
+builder.Services.AddAuthorization();
 
 
 var app = builder.Build();
+
+if (args.Contains("--seed", StringComparer.OrdinalIgnoreCase))
+{
+    if (!app.Environment.IsDevelopment())
+    {
+        throw new InvalidOperationException("Development seed data can only run in the Development environment.");
+    }
+
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<Context>();
+    var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
+    await DbInitializer.InitializeAsync(context, passwordHasher, app.Configuration);
+    return;
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -24,6 +62,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

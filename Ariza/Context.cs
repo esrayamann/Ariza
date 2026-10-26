@@ -5,16 +5,27 @@ namespace Ariza
 {
     public class Context:DbContext 
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public Context(DbContextOptions<Context> options) : base(options)
         {
-            //optionsBuilder.UseSqlServer("server=LAPTOP-IEH31APK;database=Ariza;user id=sa;password=1234;TrustServerCertificate=True;");
         }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
-        public DbSet<Talep> Taleps { get; set; }
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Role> Roles { get; set; } = null!;
+        public DbSet<UserRole> UserRoles { get; set; } = null!;
+        public DbSet<Talep> Taleps { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>()
+                .HasIndex(user => user.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Role>()
+                .HasIndex(role => role.Rol)
+                .IsUnique();
+
+            modelBuilder.Entity<UserRole>()
+                .HasIndex(userRole => new { userRole.UserId, userRole.RoleId })
+                .IsUnique();
+
             modelBuilder.Entity<Talep>()
                 .HasOne(a => a.User)
                 .WithMany(u => u.Taleps)

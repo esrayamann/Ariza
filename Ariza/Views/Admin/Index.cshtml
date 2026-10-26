@@ -1,0 +1,50 @@
+@model IReadOnlyList<Ariza.Models.Talep>
+@{
+    ViewData["Title"] = "Yönetim Paneli";
+}
+
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+        <p class="eyebrow mb-2">YÖNETİM</p>
+        <h1 class="h2 mb-1">Arıza talepleri</h1>
+        <p class="text-secondary mb-0">Tüm kayıtları tek bir yerden takip edin.</p>
+    </div>
+    <span class="badge text-bg-primary rounded-pill px-3 py-2">@Model.Count toplam talep</span>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Talep sahibi</th>
+                    <th>Birim / Bölüm</th>
+                    <th>Arıza</th>
+                    <th>Durum</th>
+                    <th>Oluşturulma</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr><td colspan="6" class="text-center text-secondary py-5">Henüz talep yok.</td></tr>
+            }
+            else
+            {
+                @foreach (var talep in Model)
+                {
+                    <tr>
+                        <td>@talep.Id</td>
+                        <td>@talep.User.Email</td>
+                        <td>@talep.Birim / @talep.Bolum</td>
+                        <td class="request-description">@talep.Ariza</td>
+                        <td><span class="badge text-bg-secondary">@talep.Durum</span></td>
+                        <td>@talep.CreatedDate.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -18,5 +18,68 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  min-height: 100vh;
+  background: #f6f8fb;
+  color: #172033;
+}
+
+.navbar-brand span {
+  color: #635bff;
+}
+
+.navbar {
+  min-height: 72px;
+}
+
+.hero {
+  background: linear-gradient(120deg, #ffffff 0%, #eff0ff 100%);
+}
+
+.hero h1 {
+  max-width: 15ch;
+  letter-spacing: -0.04em;
+}
+
+.hero-stat {
+  background: #171b35;
+  color: white;
+}
+
+.eyebrow {
+  color: #635bff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.feature-card {
+  background: white;
+  border: 1px solid #e7ebf3;
+  border-radius: 1rem;
+}
+
+.page-heading h1 {
+  letter-spacing: -0.03em;
+}
+
+.request-description {
+  max-width: 360px;
+  white-space: normal;
+}
+
+.success-card {
+  max-width: 620px;
+}
+
+.success-icon {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #ddf8e7;
+  color: #16753a;
+  font-size: 2rem;
+  font-weight: 700;
 }

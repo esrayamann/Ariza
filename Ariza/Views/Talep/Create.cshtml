@@ -1,21 +1,41 @@
 ﻿@model Ariza.Models.BasvuruViewModel
 
-<h2>Başvuru Oluştur</h2>
+@{
+    ViewData["Title"] = "Yeni Arıza Talebi";
+}
 
-<form asp-action="Create" method="post">
-    <div>
-        <label for="Ariza">Arıza nedir</label>
-        <input type="text" asp-for="Ariza" />
-        <span asp-validation-for="Ariza"></span>
+<div class="page-heading mb-4">
+    <p class="eyebrow mb-2">TEKNİK DESTEK</p>
+    <h1>Yeni arıza talebi</h1>
+    <p class="text-secondary mb-0">Talebinizi mümkün olduğunca ayrıntılı yazın; ekibimiz durum güncellemesini panelinizde paylaşacaktır.</p>
+</div>
+
+<form asp-action="Create" method="post" class="card border-0 shadow-sm p-4 p-md-5">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <div class="mb-3">
+        <label asp-for="Ariza" class="form-label">Arıza açıklaması</label>
+        <textarea asp-for="Ariza" class="form-control" rows="5" placeholder="Örn. Yazıcı bağlantı hatası veriyor."></textarea>
+        <span asp-validation-for="Ariza" class="text-danger"></span>
     </div>
-    <div>
-        <label for="Bolum">Bölüm</label>
-        <input type="text" asp-for="Bolum" />
-        <span asp-validation-for="Bolum"></span>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label asp-for="Birim" class="form-label">Birim</label>
+            <input asp-for="Birim" class="form-control" placeholder="Örn. Bilgi İşlem">
+            <span asp-validation-for="Birim" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Bolum" class="form-label">Bölüm</label>
+            <input asp-for="Bolum" class="form-control" placeholder="Örn. Destek Masası">
+            <span asp-validation-for="Bolum" class="text-danger"></span>
+        </div>
     </div>
-    <div class="agile-profile">
-        <p>Birim</p>
-        <input type="text" name="Birim" placeholder="Birim" required="">
+    <div class="d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary px-4">Talebi gönder</button>
+        <a asp-action="MyApplications" class="btn btn-outline-secondary">Vazgeç</a>
     </div>
-    <button type="submit">Gönder</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
